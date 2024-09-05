@@ -1,0 +1,19 @@
+:root {
+  --color-strongest-slate: rgba(15, 15, 41, 1);
+  --color-strong-slate: rgba(25, 35, 59, 0.5);
+  --color-slate: rgba(226, 232, 240, 1);
+  --color-lighten-slate: rgba(226, 232, 240, 0.702);
+  --color-white: white;
+
+  --font-family-inter: "Inter", sans-serif;
+  --font-size-default: 16px;
+  --border-radios: 8px;
+
+  --font-family-primary: var(--font-family-inter);
+
+  --title-color-primary: var(--color-slate);
+  --title-color-secundary: var(--color-lighten-slate);
+
+  --background-color-primary: var(--color-strongest-slate);
+  --background-color-secundary: var(--color-strong-slate);
+}

@@ -1,0 +1,10 @@
+.margin-primary {
+  margin-top: 30px;
+}
+
+.banner {
+  max-height: 400px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}

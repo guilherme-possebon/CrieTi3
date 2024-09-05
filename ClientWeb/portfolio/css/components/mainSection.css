@@ -1,0 +1,30 @@
+.mainSectionContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.mainDivContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.mainTitle {
+  color: var(--title-color-primary);
+  font-size: clamp(1.2rem, 4vw, 2.2rem);
+  font-weight: normal;
+  margin-bottom: 24px;
+}
+.mainTitle span {
+  font-weight: 700;
+}
+.mainParagraph {
+  color: var(--title-color-secundary);
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  font-weight: 400;
+  text-align: center;
+  text-wrap: nowrap;
+}

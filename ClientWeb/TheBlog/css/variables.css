@@ -1,0 +1,20 @@
+:root {
+  --color-dark-blue: rgba(9, 13, 31, 1);
+  --color-darkless-blue: rgb(32, 36, 54);
+  --color-purple: rgba(105, 65, 198, 1);
+  --color-blue: rgba(53, 56, 205, 1);
+  --color-light-pink: rgba(193, 21, 116, 1);
+  --color-almost-white: rgba(249, 245, 255, 1);
+  --color-white: rgba(255, 255, 255, 1);
+  --color-light-gray: rgba(192, 197, 208, 1);
+
+  --font-family-inter: "Inter", sans-serif;
+  --font-size-default: 16px;
+  --border-radios: 8px;
+  --border-radios-large: 16px;
+
+  --font-family-primary: var(--font-family-inter);
+  --background-color-primary: var(--color-dark-blue);
+
+  --text-color: var(--color-white);
+}

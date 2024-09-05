@@ -1,0 +1,18 @@
+:root {
+  --color-red: #f41b38;
+  --color-gree: #1ebc99;
+  --color-blue: #1884f7;
+  --color-yellow: #f9cc0d;
+  --color-white: #ffffff;
+  --color-black: #0a070b;
+  --color-darken-gray: #363536;
+  --color-gray: #4f4e50;
+  --color-lighten-gray: #807e81;
+
+  --font-family-questrial: "Questrial", sans-serif;
+  --font-size-default: 16px;
+  --border-radios-default: 3px;
+
+  --font-family-primary: var(--font-family-questrial);
+  --color-default: var(--color-red);
+}

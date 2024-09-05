@@ -1,0 +1,60 @@
+.newsletterPostsSection {
+  margin: 30px 0;
+}
+.postsLayout1 {
+  display: flex;
+}
+.newsletterForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 60px;
+}
+.pageName {
+  color: var(--color-purple);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.formTitle {
+  font-size: 2.5rem;
+  text-align: center;
+}
+.textForm {
+  color: var(--color-light-gray);
+  width: 60%;
+  text-align: center;
+}
+.formInputs {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+}
+
+.privacyPolicy {
+  color: var(--color-light-gray);
+  font-size: 0.6rem;
+  text-align: center;
+}
+.emailForm,
+.btnForm {
+  padding: 12px 14px 12px 16px;
+  border-radius: var(--border-radios);
+  border: none;
+}
+
+.btnForm {
+  background-color: var(--color-purple);
+  color: white;
+}
+.newsletterContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 768px) {
+  .recentPosts {
+    flex-direction: row;
+  }
+}

@@ -1,0 +1,228 @@
+.blogPostsSection {
+  padding: 30px 0;
+}
+.blogPostsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.postsLayout1 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  margin-top: 32px;
+  gap: 32px;
+}
+.post1 {
+  margin-bottom: 32px;
+}
+.recentPosts {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  gap: 32px;
+}
+.categoriesCotainer {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+}
+.post2 .categoriesCotainer,
+.post3 .categoriesCotainer {
+  margin-top: 24px;
+}
+.postOne {
+  width: 500px;
+}
+.postItems {
+  width: 325px;
+}
+
+.postImg {
+  width: 320px;
+  object-fit: cover;
+  border-radius: var(--border-radios);
+}
+.differentImg {
+  height: 160px;
+}
+
+.externalLink {
+  margin-top: 5px;
+}
+
+.postContent {
+  margin: 24px 0;
+}
+
+.postDay {
+  color: var(--color-purple);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.postTitleContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+}
+
+.postText {
+  color: var(--color-light-gray);
+}
+
+.tag {
+  padding: 2px 12px;
+  border-radius: var(--border-radios-large);
+  font-weight: 500;
+}
+
+.AMD {
+  background-color: rgb(252, 238, 223);
+  color: rgb(178, 109, 50);
+}
+
+.events {
+  background-color: rgb(216, 216, 255);
+  color: rgb(53, 56, 205);
+}
+.gamescom {
+  background-color: rgb(235, 213, 255);
+  color: rgb(96, 35, 152);
+}
+.PS5 {
+  background-color: rgb(232, 230, 254);
+  color: rgb(31, 22, 139);
+}
+.controls {
+  background-color: rgb(255, 255, 255);
+  color: rgb(68, 68, 68);
+}
+.fortnite {
+  background-color: rgb(208, 197, 254);
+  color: rgb(59, 16, 83);
+}
+.crossover {
+  background-color: rgb(227, 255, 246);
+  color: rgb(43, 61, 25);
+}
+.GTA6 {
+  background-color: rgb(159, 172, 252);
+  color: rgb(12, 52, 81);
+}
+.taketwo {
+  background-color: rgb(21, 110, 254);
+  color: black;
+}
+.xbox {
+  background-color: rgb(96, 247, 96);
+  color: black;
+}
+.mcDonald {
+  background-color: rgb(255, 88, 88);
+  color: black;
+}
+.starfield {
+  background-color: rgb(255, 172, 172);
+  color: rgb(184, 60, 60);
+}
+.bethesda {
+  background-color: rgb(224, 224, 224);
+  color: black;
+}
+.doom {
+  background-color: rgb(192, 86, 86);
+  color: rgb(218, 218, 218);
+}
+.microsoft {
+  background-color: rgb(46, 112, 255);
+  color: black;
+}
+
+.pokemon {
+  background-color: rgb(252, 218, 0);
+  color: rgb(0, 0, 0);
+}
+
+.none {
+  display: none;
+}
+
+@media only screen and (min-width: 768px) {
+  .recentPosts {
+    flex-direction: column;
+  }
+  .postTwoAndThree {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .postsLayout2 {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .post2,
+  .post3 {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 32px;
+  }
+  .post2 .postContent,
+  .post3 .postContent {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .post2 .postImg,
+  .post3 .postImg {
+    height: 200px;
+    min-width: 320px;
+  }
+  .post1,
+  .post4 {
+    width: 100%;
+  }
+  .post1 .postImg,
+  .post4 .postImg {
+    width: 100%;
+    object-fit: cover;
+    height: 300px;
+  }
+  .post1 {
+    margin: 0;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .recentPosts {
+    flex-direction: row;
+  }
+
+  .postsLayout2 {
+    display: flex;
+    width: 100%;
+    gap: 32px;
+    flex-direction: row;
+  }
+
+  .post2,
+  .post3 {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .post2 .postImg,
+  .post3 .postImg {
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .post1 {
+    width: 100%;
+  }
+}

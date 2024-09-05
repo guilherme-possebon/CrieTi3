@@ -1,0 +1,42 @@
+.banner {
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.35) 50%,
+      rgba(0, 0, 0, 0.9) 100%
+    ),
+    url(../../assets/background.jpg);
+  height: 720px;
+  display: flex;
+  align-items: center;
+}
+.bannerContainer {
+  margin-left: 72px;
+}
+.bannerTitle,
+.bannerSubTitle {
+  color: var(--color-white);
+  font-weight: normal;
+}
+.bannerTitle {
+  font-size: 65px;
+  line-height: 72px;
+  letter-spacing: -1.5px;
+  margin-bottom: 20px;
+}
+.bannerSubTitle {
+  font-size: 20px;
+  line-height: 32px;
+  margin-bottom: 40px;
+}
+.input {
+  width: 360px;
+  border-radius: var(--border-radios-default);
+  border: none;
+  padding: 18px 24px;
+  font-size: var(--font-size-default);
+}
+form {
+  display: flex;
+  align-items: center;
+}

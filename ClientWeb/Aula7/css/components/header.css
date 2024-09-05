@@ -1,0 +1,42 @@
+.headerCoitainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 70px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+}
+.headerCoitainer div {
+  display: flex;
+  align-items: center;
+}
+.headerBrand {
+  width: 170px;
+}
+.headerCoitainer div nav {
+  display: flex;
+  gap: 24px;
+}
+.headerNavItem {
+  color: var(--color-lighten-gray);
+}
+.headerNavItem--active {
+  color: var(--color-white);
+}
+.headerCoitainer div nav a span {
+  margin-left: 5px;
+}
+.button {
+  padding: 10px 24px;
+  margin-right: 20px;
+  border-radius: var(--border-radios-default);
+  background-color: var(--color-default);
+  color: var(--color-white);
+  cursor: pointer;
+  border: none;
+}
+.buttonXL {
+  padding: 20px 32px;
+}

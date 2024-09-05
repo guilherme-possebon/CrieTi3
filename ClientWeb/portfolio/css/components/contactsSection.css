@@ -1,0 +1,37 @@
+.contactSection {
+  background-color: var(--background-color-secundary);
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+  width: 100%;
+}
+
+.infos {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 100%;
+  gap: 16px;
+  margin-top: 16px;
+}
+.infoItems {
+  display: flex;
+  align-items: center;
+}
+.infoItems i {
+  margin-right: 8px;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+}
+
+.infoItems span {
+  color: var(--title-color-secundary);
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+}
+
+.infoItems span:hover {
+  color: var(--title-color-primary);
+}

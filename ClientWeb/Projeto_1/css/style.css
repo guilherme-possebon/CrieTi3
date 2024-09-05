@@ -1,0 +1,184 @@
+header {
+  background-color: #0b0c0e;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  width: 100%;
+}
+header span {
+  color: #00d5ff;
+  font-weight: bold;
+}
+header h1 {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  color: white;
+}
+header nav {
+  display: flex;
+  gap: 20px;
+}
+header nav a {
+  text-decoration: none;
+  color: #cecece;
+}
+header nav a:hover {
+  color: white;
+}
+.sectionProducts,
+.sectionAbout,
+.sectionBudgets,
+.sectionContact {
+  margin-top: 80px;
+}
+.sectionBanner {
+  padding-top: 70px;
+}
+.sectionBanner img {
+  width: 100%;
+  object-fit: cover;
+}
+.sectionProducts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+.sectionProducts > div {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.sectionProducts img {
+  width: 100%;
+  background-color: white;
+}
+.sectionProducts p {
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+.sectionProducts p {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.sectionAbout {
+  background-color: #0b0c0e;
+  color: white;
+  padding: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+}
+@media screen and (max-width: 1000px) {
+  .sectionAbout {
+    flex-wrap: wrap;
+  }
+}
+.sectionAbout h2 {
+  text-transform: uppercase;
+}
+
+.sectionAbout h2,
+.sectionAbout .lastLine {
+  color: #00d5ff;
+  font-weight: bold;
+}
+.sectionAbout img {
+  width: 100%;
+  max-width: fit-content;
+}
+.sectionAbout div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.sectionAbout .textContainer {
+  gap: 16px;
+}
+
+.sectionBudgets form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  gap: 30px;
+}
+.sectionBudgets form label {
+  display: flex;
+  flex-direction: column;
+}
+.sectionBudgets form select:hover {
+  cursor: pointer;
+}
+.sectionBudgets form select {
+  padding: 8px;
+}
+.sectionBudgets {
+  margin-right: 10px;
+  margin-left: 10px;
+  padding: 20px;
+  border-radius: 8px;
+}
+.sectionBudgets h2 {
+  text-transform: uppercase;
+  text-align: center;
+}
+.sectionBudgets summary {
+  width: 100%;
+  cursor: pointer;
+}
+
+.sectionBudgets button {
+  background-color: #00d5ff;
+  color: white;
+  font-size: large;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.sectionBudgets button:hover {
+  background-color: #24dafe;
+}
+
+.sectionBudgets input,
+.sectionBudgets select,
+.sectionBudgets textarea,
+.sectionBudgets button {
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.sectionBudgets input[type="file"] {
+  background-color: white;
+}
+
+.sectionContact {
+  background-color: #0b0c0e;
+  color: #cecece;
+  padding: 40px;
+}
+.sectionContact h2 {
+  color: #00d5ff;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.sectionContact span {
+  font-weight: bold;
+  color: white;
+}
+
+footer {
+  background-color: #00d5ff;
+  text-align: center;
+  padding: 40px;
+}

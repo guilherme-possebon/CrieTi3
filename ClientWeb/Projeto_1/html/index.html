@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Guilherme Possebon" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/reset.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Meu games brasil</title>
+  </head>
+  <body>
+    <header>
+      <h1>meu<span>game</span></h1>
+      <nav>
+        <a href="#produtcs">Produtos</a>
+        <a href="#about">Sobre</a>
+        <a href="#budget">Orçamentos</a>
+        <a href="#contacts">Contato</a>
+      </nav>
+    </header>
+
+    <section class="sectionBanner">
+      <img src="../assets/banner.png" alt="" />
+    </section>
+
+    <section class="sectionProducts" id="produtcs">
+      <h2>Nossos Produtos</h2>
+      <div>
+        <div>
+          <img src="../assets/Foto_jogos.png" alt="Foto dos jogos" />
+          <p>jogos</p>
+        </div>
+        <div>
+          <img src="../assets/Foto_perifericos.png" alt="Foto dos periféicos" />
+          <p>periféricos</p>
+        </div>
+      </div>
+      <div>
+        <div>
+          <img src="../assets/Foto_consoles.png" alt="Foto dos consoles" />
+          <p>consoles</p>
+        </div>
+        <div>
+          <img
+            src="../assets/Foto_actions.png"
+            alt="fotos das figure actions"
+          />
+          <p>Figure actions</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sectionAbout" id="about">
+      <div>
+        <div class="textContainer">
+          <h2>Sobre nós</h2>
+          <p>
+            Bem-vindo à "Meu Game Brasil", sua loja especializada em tudo o que
+            os gamers e entusiastas da cultura geek adoram.
+          </p>
+          <p>
+            Aqui, oferecemos uma ampla seleção de jogos, periféricos de última
+            geração, consoles das principais marcas e colecionáveis exclusivos,
+            como figures action.
+          </p>
+          <p>
+            Nosso compromisso é proporcionar a você a melhor experiência de
+            compra, garantindo produtos de qualidade, atendimento personalizado
+            e a paixão que compartilhamos pelo universo dos games.
+          </p>
+          <p>
+            Na "Meu Game Brasil", você encontra não apenas produtos, mas também
+            um espaço para explorar e celebrar sua paixão pelos jogos.
+          </p>
+          <p class="lastLine">
+            Junte-se a nós e mergulhe neste mundo fascinante!
+          </p>
+        </div>
+      </div>
+      <img src="../assets/Fachada.png" alt="foto da fachada da loja" />
+    </section>
+
+    <section class="sectionBudgets" id="budget">
+      <h2>Solicete um orçamento</h2>
+      <form id="form">
+        <label for="userName">
+          Nome:
+          <input type="text" name="userName" id="" />
+        </label>
+        <label for="userEmail">
+          Email:
+          <input type="email" name="userEmail" id="" />
+        </label>
+        <label for="userPhone">
+          Telefone:
+          <input
+            type="tel"
+            name="userPhone"
+            id=""
+            pattern="[0-9]{2}-[0-9]{5}-[0-9]{4}"
+          />
+        </label>
+
+        <label for="productList">
+          Produto:
+          <select name="productList" id="">
+            <option value="jogos">Jogos</option>
+            <option value="consoles">Consoles</option>
+            <option value="perifericos">Periféricos</option>
+            <option value="figure action">Figure Action</option>
+          </select>
+        </label>
+        <label for="files">
+          Anexos:
+          <input type="file" name="files" id="" />
+        </label>
+
+        <label for="userMsg">
+          Sua mensagem:
+          <textarea id="" name="userMsg" rows="10" cols="50"></textarea>
+        </label>
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+
+    <section class="sectionContact" id="contacts">
+      <h2>Contatos</h2>
+      <address>
+        Ficou com alguma dúvida? <br />
+        Entre em contato conosco ou venha nos visitar! <br /><br />
+        (00) 9999-9999 <br />
+        contato@meugamebr.com <br /><br />
+        <span>Meu Game Brasil</span> <br />
+
+        Estrada sem nome, 1234 <br />
+        Bairro - Cidade - UF - CEP: 12345-678
+      </address>
+    </section>
+    <footer>
+      © 2024 meugamebr.com.br. Todos os direitos reservados. <br />
+      Desenvolvido por Crie_TI
+    </footer>
+  </body>
+</html>

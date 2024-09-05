@@ -1,0 +1,58 @@
+.projectsSection > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 0;
+}
+
+.projectsItemns {
+  display: flex;
+  gap: 15px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.projectDiv {
+  background-color: var(--background-color-secundary);
+  border-radius: var(--border-radios);
+  width: 375px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.projectDiv img {
+  width: 100%;
+  margin: 16px 0;
+}
+
+.projectDiv p {
+  color: var(--title-color-secundary);
+  text-align: center;
+}
+
+.projectTitle {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+.projectTitle .icons {
+  position: absolute;
+  right: 0;
+}
+.projectTitle h3 {
+  color: var(--title-color-primary);
+  font-weight: 400;
+  margin: 0 auto;
+}
+.icons i {
+  margin-right: 10px;
+}
+
+.icons i:hover {
+  color: var(--title-color-secundary);
+  transition: all 300ms;
+}

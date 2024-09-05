@@ -1,0 +1,16 @@
+.TitleSection {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.MainTitle {
+  font-weight: 700;
+  font-size: 15vmin;
+  text-transform: uppercase;
+  border: 1px solid;
+  border-left: 0;
+  border-right: 0;
+  width: 1400px;
+}

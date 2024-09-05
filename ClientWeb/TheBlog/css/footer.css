@@ -1,0 +1,16 @@
+.footer {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.contactsList {
+  display: flex;
+  gap: 6px;
+  list-style: none;
+  margin-left: 12px;
+}
+
+.contactsList a {
+  text-decoration: underline;
+}

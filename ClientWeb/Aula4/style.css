@@ -1,0 +1,38 @@
+h1 {
+  color: blue;
+}
+
+.text {
+  font-weight: 800;
+}
+
+.botao {
+  border-radius: 8px;
+  border: none;
+  font-weight: 800;
+  padding: 10px;
+}
+
+.botaoVermelho {
+  background-color: red;
+}
+.botaoAzul {
+  background-color: blue;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imgContainer {
+  width: 500px;
+}
+.imgContainer img {
+  width: 400px;
+}
+
+.textContainer {
+  width: 500px;
+}
