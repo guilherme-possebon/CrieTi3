@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Busca CEP</title>
+  </head>
+  <body>
+    <input
+      type="text"
+      name="CEP"
+      id="CEP"
+      value="95900718"
+      placeholder="Digite o seu CEP"
+    />
+    <button onclick="buscaCEP()">Buscar CEP</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Dado</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody id="cepTbody"></tbody>
+    </table>
+  </body>
+  <script src="ceps.js"></script>
+</html>

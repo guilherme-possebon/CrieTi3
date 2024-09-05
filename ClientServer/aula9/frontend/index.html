@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Busca feriados</title>
+  </head>
+  <body>
+    <select name="anos" id="anos"></select>
+
+    <button onclick="buscaFeriados()">Clique aqui para buscar</button>
+
+    <table style="border-collapse: collapse; width: 700px" border="1">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Nome</th>
+          <th>Tipo</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </body>
+  <script src="../backend/feriados.js"></script>
+</html>

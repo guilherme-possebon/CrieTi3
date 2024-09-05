@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Listagem de ufs</title>
+  </head>
+  <body>
+    <h1>Listagem de ufs</h1>
+    <button onclick="buscaUfs()">Clique aqui para listar as ufs</button>
+    <table border="1" style="border-collapse: collapse; width: 700px">
+      <thead>
+        <tr>
+          <td>Código</td>
+          <td>Sigla</td>
+          <td>Nome</td>
+        </tr>
+      </thead>
+      <tbody id="body"></tbody>
+    </table>
+  </body>
+  <script>
+    const url = "https://brasilapi.com.br/api/ibge/uf/v1";
+
+    async function buscaUfs() {
+      let res = await fetch(url);
+      let estados = await res.json();
+      let html = "";
+      for (let index = 0; index < estados.length; index++) {
+        let estado = estados[index];
+        html += `
+          <tr>
+            <td>
+              ${estado.id}
+            </td>
+            <td>
+              ${estado.sigla}
+            </td>
+            <td>
+              ${estado.nome}
+            </td>
+          </tr>`;
+      }
+      document.getElementById("body").innerHTML = html;
+    }
+  </script>
+</html>
