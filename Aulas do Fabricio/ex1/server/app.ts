@@ -14,11 +14,18 @@ interface usuariosAdminInterface {
   password: string;
 }
 
-let usuariosADM: usuariosAdminInterface = {
-  id: 1,
-  user: "admin",
-  password: "admin",
-};
+let usuariosADM: usuariosAdminInterface[] = [
+  {
+    id: 1,
+    user: "admin",
+    password: "admin",
+  },
+  {
+    id: 2,
+    user: "admin2",
+    password: "admin2",
+  },
+];
 
 let formasPagamentos: FormaPagamento[] = [];
 
@@ -45,6 +52,7 @@ server.get(
   }
 );
 
+// NOTE listar apenas uma forma de pagamento
 server.get(
   "/formaDePagamento/:id",
   async (req: Request, res: Response): Promise<Response> => {
