@@ -23,19 +23,20 @@ async function login() {
     window.location = "/client/home.html";
     isLoged(true);
   } else {
-    document.getElementById("password").classList.remove("input-colors");
-    document.getElementById("user").classList.remove("input-colors");
-    document.getElementById("labelPassword").classList.remove("label-colors");
-    document.getElementById("labelUser").classList.remove("label-colors");
-
-    document.getElementById("password").classList.add("input-danger");
-    document.getElementById("user").classList.add("input-danger");
-    document.getElementById("labelPassword").classList.add("label-danger");
-    document.getElementById("labelUser").classList.add("label-danger");
-
+    document.getElementById("password").classList.add("border-danger");
+    document.getElementById("user").classList.add("border-danger");
     document.getElementById("confirmationText").innerHTML =
       "Usuário e senha estão incorretos!";
     document.getElementById("confirmationText").classList.add("text-danger");
+
+    setTimeout(() => {
+      document.getElementById("password").classList.remove("border-danger");
+      document.getElementById("user").classList.remove("border-danger");
+      document.getElementById("confirmationText").innerHTML = "";
+      document
+        .getElementById("confirmationText")
+        .classList.remove("text-danger");
+    }, 2000);
   }
 }
 // NOTE Is loged
@@ -73,10 +74,10 @@ async function showPaymentOptions() {
       let editar = `<button onclick="goToEditPage(${paymentOption.id})" class="btn btn-success">Editar</button>`;
       let excluir = `<button onclick="deletePaymentOption(${paymentOption.id})" class="btn btn-danger">Excluir</button>`;
       html += `
-        <tr class="table-row-hover">
-          <td class="table-body-cell">${paymentOption.id}</td>
-          <td class="table-body-cell">${paymentOption.name}</td>
-          <td class="table-body-cell">${editar} ${excluir}</td>
+        <tr>
+          <td>${paymentOption.id}</td>
+          <td>${paymentOption.name}</td>
+          <td>${editar} ${excluir}</td>
         </tr>
       `;
       console.log(paymentOption);
@@ -172,17 +173,5 @@ async function deletePaymentOption(id) {
     console.log(deleteResult);
 
     showPaymentOptions();
-  }
-}
-
-let toggle = false;
-function menuButton() {
-  toggle = !toggle;
-  if (toggle) {
-    document.getElementById("navbar-buttonMenu").classList.add("hidden");
-    document.getElementById("navbar-buttonMenu").classList.remove("block");
-  } else {
-    document.getElementById("navbar-buttonMenu").classList.remove("hidden");
-    document.getElementById("navbar-buttonMenu").classList.add("block");
   }
 }

@@ -1,9 +1,15 @@
 {
+  "scripts": {
+    "dev": "npx tailwindcss -i ./ex1-copia/client/style.css -o ./ex1-copia/client/output.css --watch"
+  },
   "dependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.10"
   }
 }

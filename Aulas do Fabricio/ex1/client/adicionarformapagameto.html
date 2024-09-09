@@ -3,97 +3,133 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="output.css" />
+    <script
+      src="https://kit.fontawesome.com/c4df1ef96d.js"
       crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
+    ></script>
     <title>Adicionar forma de pagamento</title>
   </head>
-  <body class="bg-dark2">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/client/home.html">SeuChico</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+  <body class="h-screen">
+    <nav class="bg-gray-900 border-gray-700">
+      <div
+        class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+      >
+        <a
+          href="/client/home.html"
+          class="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <span class="navbar-toggler-icon"></span>
+          <img
+            src="/client/assets/pixlr-image-generator-66ddb1e3cf3c47eae142493a.png"
+            class="h-8"
+            alt="SeuChico Logo"
+          />
+          <span
+            class="self-center text-2xl font-semibold whitespace-nowrap text-white"
+            >SeuChico</span
+          >
+        </a>
+        <button
+          type="button"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-400 rounded-lg md:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
+          aria-expanded="false"
+          onclick="menuButton()"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 17 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15"
+            />
+          </svg>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/client/home.html">
-                <i class="bi bi-house-fill"></i> Home
-              </a>
+        <div class="hidden w-full md:block md:w-auto" id="navbar-buttonMenu">
+          <ul
+            class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-700 rounded-lg bg-gray-800 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-gray-900"
+          >
+            <li>
+              <a
+                href="/client/home.html"
+                class="link available"
+                aria-current="page"
+                ><i class="fa-solid fa-house"></i> Home</a
+              >
             </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#">
-                <i class="bi bi-box-seam-fill"></i> Produtos
-              </a>
+            <li>
+              <a class="link disabled" aria-disabled="true"
+                ><i class="fa-solid fa-percent"></i> Promoções</a
+              >
             </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#">
-                <i class="bi bi-clipboard-fill"></i> Categorias
-              </a>
+            <li>
+              <a class="link disabled" aria-disabled="true"
+                ><i class="fa-solid fa-clipboard"></i> Categorias</a
+              >
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="/client/formapagamento.html">
-                <i class="bi bi-credit-card-fill"></i> Forma de pagamento
-              </a>
+            <li>
+              <a class="link disabled" aria-disabled="true"
+                ><i class="fa-solid fa-box"></i> Produtos</a
+              >
+            </li>
+            <li>
+              <a href="/client/formapagamento.html" class="link available"
+                ><i class="fa-solid fa-credit-card"></i> Formas de pagamento</a
+              >
             </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <h1 class="fs-2 text-center m-5" id="h1">Adicionar forma de pagamento</h1>
+    <h1 class="text-xl font-bold text-center m-5" id="h1">
+      Adicionar forma de pagamento
+    </h1>
 
     <form
       onsubmit="savePaymentOption()"
       method="dialog"
-      class="d-flex align-items-center flex-column"
+      class="flex items-center justify-center flex-col"
     >
-      <div>
-        <div class="form-floating mb-3">
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            required
-            placeholder="Nome da forma de pagamento"
-            autofocus
-          />
-          <label for="floatingInput">Nome</label>
+      <div class="w-[200px]">
+        <div class="w-full">
+          <div class="relative my-4">
+            <input
+              type="text"
+              id="name"
+              class="input input-colors peer"
+              placeholder=" "
+              autofocus
+            />
+            <label
+              for="name"
+              id="labelName"
+              class="label label-colors peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+              >Nome</label
+            >
+          </div>
+        </div>
+        <div class="flex justify-between w-full">
+          <button type="submit" class="btn btn-primary">Salvar</button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            onclick="window.location = '/client/formapagamento.html'"
+          >
+            Cancelar
+          </button>
         </div>
       </div>
-      <div class="d-flex gap-4">
-        <button type="submit" class="btn btn-primary">Salvar</button>
-        <button
-          type="button"
-          class="btn btn-secondary"
-          onclick="window.location = '/client/formapagamento.html'"
-        >
-          Cancelar
-        </button>
-      </div>
     </form>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
+
     <script src="script.js"></script>
     <script>
       loadPaymentOption();
