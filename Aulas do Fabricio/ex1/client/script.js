@@ -76,7 +76,8 @@ async function showPaymentOptions() {
         <tr class="table-row-hover">
           <td class="table-body-cell">${paymentOption.id}</td>
           <td class="table-body-cell">${paymentOption.name}</td>
-          <td class="table-body-cell">${editar} ${excluir}</td>
+          <td class="table-body-cell">${editar}</td>
+          <td class="table-body-cell">${excluir}</td>
         </tr>
       `;
       console.log(paymentOption);
