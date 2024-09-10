@@ -8,6 +8,7 @@ const client: Client = new Client({
   database: "crieTi3",
 });
 
+// Pode usar assim tbm
 // client.connect();
 // client
 //   .query("Select * from produto")
