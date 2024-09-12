@@ -13,7 +13,17 @@ let server: Express = express();
 server.use(cors());
 server.use(express.json());
 
-// let livros: Livro[] = [];
+async function pegarLivro(id: number) {
+  let sql = "SELECT * FROM livro WHERE id = $1 LIMIT 1;";
+  let resultado = await dbQuery(sql, [id]);
+
+  if (resultado.length > 0) {
+    console.log(resultado[0]);
+    return resultado[0];
+  }
+
+  return null;
+}
 
 server.get("/", async (req: Request, res: Response): Promise<Response> => {
   return res.status(200).json("Olá, mundo!");
@@ -22,7 +32,6 @@ server.get("/", async (req: Request, res: Response): Promise<Response> => {
 server.get("/livro", async (req: Request, res: Response): Promise<Response> => {
   let sql = "select * from livro order by codigo";
   let result = await dbQuery(sql);
-  console.log(result, "select *");
   return res.status(200).json(result);
 });
 
@@ -35,8 +44,7 @@ server.get(
     let result = await dbQuery(sql, [codigo]);
 
     if (result.length > 0) {
-      console.log(result, "get one");
-      return res.status(200).json(result[0]);
+      return res.status(200).json(result);
     }
 
     let erro = { codigo: codigo, erro: "Livro não encontrado." };
@@ -63,8 +71,7 @@ server.post(
       false,
     ]);
 
-    console.log(sql, "Insert");
-    return res.status(200).json(sql);
+    return res.status(200).json("Ok");
   }
 );
 
@@ -73,7 +80,6 @@ server.put(
   "/livro/:codigo",
   async (req: Request, res: Response): Promise<Response> => {
     let codigo = Number(req.params.codigo);
-    console.log(codigo);
 
     let sql =
       "update livro set titulo = $2, autor = $3, qtpaginas = $4 where codigo = $1";
@@ -85,8 +91,6 @@ server.put(
       livro.autor = req.body.autor;
       livro.qtpaginas = req.body.qtpaginas;
 
-      console.log(livro);
-
       await dbQuery(sql, [
         livro.codigo,
         livro.titulo,
@@ -94,9 +98,7 @@ server.put(
         livro.qtpaginas,
       ]);
 
-      console.log(sql, "update");
-
-      return res.status(200).json(sql);
+      return res.status(200).json("Ok");
     }
 
     let erro = { codigo: codigo, erro: "Livro não encontrado." };
@@ -114,7 +116,7 @@ server.delete(
 
     if (codigo > 0) {
       await dbQuery(sql, [codigo]);
-      return res.status(200).json(sql);
+      return res.status(200).json("Ok");
     }
 
     let erro = { codigo: codigo, erro: "Livro não encontrado." };
@@ -123,61 +125,64 @@ server.delete(
   }
 );
 
-// server.get(
-//   "/livro/:codigo/emprestar",
-//   async (req: Request, res: Response): Promise<Response> => {
-//     let codigo = Number(req.params.codigo);
+server.get(
+  "/livro/:codigo/emprestar",
+  async (req: Request, res: Response): Promise<Response> => {
+    let codigo = Number(req.params.codigo);
 
-//     if (codigo >= 0 && codigo < livros.length) {
-//       let livro = livros[codigo];
+    let livro = await pegarLivro(codigo);
 
-//       if (livro.emprestado == true) {
-//         let erro = {
-//           codigo: codigo,
-//           erro: "Livro já emprestado.",
-//         };
+    if (!livro.titulo) {
+      let erro = { codigo: codigo, erro: "Livro não encontrado." };
 
-//         return res.status(400).json(erro);
-//       } else {
-//         livro.emprestado = true;
-//       }
+      return res.status(400).json(erro);
+    }
 
-//       return res.status(200).json(livro);
-//     }
+    if (livro.emprestado == true) {
+      let erro = {
+        codigo: codigo,
+        erro: "Livro já emprestado.",
+      };
 
-//     let erro = { codigo: codigo, erro: "Livro não encontrado." };
+      return res.status(400).json(erro);
+    }
 
-//     return res.status(400).json(erro);
-//   }
-// );
+    let sql = "UPDATE livro SET emprestado = true WHERE id = $1;";
+    let resultado = await dbQuery(sql, [codigo]);
+    livro.emprestado = true;
 
-// server.get(
-//   "/livro/:codigo/devolver",
-//   async (req: Request, res: Response): Promise<Response> => {
-//     let codigo = Number(req.params.codigo);
+    return res.status(200).json(livro);
+  }
+);
 
-//     if (codigo >= 0 && codigo < livros.length) {
-//       let livro = livros[codigo];
+server.get(
+  "/livro/:codigo/devolver",
+  async (req: Request, res: Response): Promise<Response> => {
+    let codigo = Number(req.params.codigo);
+    let livro = await pegarLivro(codigo);
 
-//       if (livro.emprestado == false) {
-//         let erro = {
-//           codigo: codigo,
-//           erro: "Livro não esta emprestado.",
-//         };
+    if (!livro.titulo) {
+      let erro = { codigo: codigo, erro: "Livro não encontrado." };
 
-//         return res.status(400).json(erro);
-//       } else {
-//         livro.emprestado = false;
-//       }
+      return res.status(400).json(erro);
+    }
 
-//       return res.status(200).json(livro);
-//     }
+    if (livro.emprestado == false) {
+      let erro = {
+        codigo: codigo,
+        erro: "Livro não esta emprestado.",
+      };
 
-//     let erro = { codigo: codigo, erro: "Livro não encontrado." };
+      return res.status(400).json(erro);
+    }
 
-//     return res.status(400).json(erro);
-//   }
-// );
+    let sql = "UPDATE livro SET emprestado = false WHERE id = $1;";
+    let resultado = await dbQuery(sql, [codigo]);
+    livro.emprestado = true;
+
+    return res.status(200).json(livro);
+  }
+);
 
 const serverInstance = server.listen(port, () => {
   console.log("Server iniciado na porta " + port);

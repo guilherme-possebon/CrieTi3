@@ -13,6 +13,5 @@ client.connect();
 
 export async function dbQuery(sql: string, values?: any[]) {
   let resultado = await client.query(sql, values);
-
   return resultado.rows;
 }

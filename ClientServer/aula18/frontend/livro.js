@@ -10,14 +10,17 @@ async function listarLivros() {
   let livros = await result.json();
   let html = "";
 
-  console.log(livros);
-
   for (let i = 0; i < livros.length; i++) {
     let livro = livros[i];
     let emprestado = livro.emprestado == true ? "Sim" : "Não";
 
     let excluir = `<button onclick="excluirLivro(${livro.codigo})" class="btn btn-danger">Excluir</button>`;
     let editar = `<button onclick="editarLivro(${livro.codigo})" class="btn btn-warning">Editar</button>`;
+    let botao = `<button onclick="devolverLivro(${livro.id})">Devolver</button>`;
+
+    if (livro.emprestado == false) {
+      botao = `<button onclick="emprestarLivro(${livro.id})">Emprestar</button>`;
+    }
 
     html += `
         <tr>
@@ -26,21 +29,17 @@ async function listarLivros() {
             <td>${livro.titulo}</td>
             <td>${livro.autor}</td>
             <td>${livro.qtpaginas}</td>
-            <td>${emprestado}</td>
+            <td>${emprestado} ${botao}</td>
         </tr>`;
   }
 
   document.getElementById("tbody-livros").innerHTML = html;
-
-  console.log(livros);
 }
 
 async function gravarLivro() {
   let codigo = pegarParamentro("codigo");
   let method = codigo == null ? "POST" : "PUT";
   let url = codigo == null ? "/livro" : "/livro/" + codigo;
-
-  console.log(url);
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -61,12 +60,10 @@ async function gravarLivro() {
   };
 
   let result = await fetch(apiUrl + url, options);
-  console.log(result, "result");
+
   let livroResult = await result.json();
 
-  console.log(livroResult, "livroResult");
-
-  if (livroResult.titulo) {
+  if (livroResult === "Ok") {
     alert("Livro cadastrado com sucesso!");
     window.location = "index.html";
   } else {
@@ -107,8 +104,6 @@ function pegarParamentro(paramentro) {
 async function carregarLivro() {
   let codigo = pegarParamentro("codigo");
 
-  console.log("codigo = " + codigo);
-
   if (codigo != null) {
     document.getElementById("h1").innerHTML = "Editar livro";
     const requestOptions = {
@@ -119,8 +114,47 @@ async function carregarLivro() {
     let result = await fetch(apiUrl + "/livro/" + codigo, requestOptions);
     let livro = await result.json();
 
-    document.getElementById("titulo").value = livro[0].titulo;
-    document.getElementById("autor").value = livro[0].autor;
-    document.getElementById("qtpaginas").value = livro[0].qtpaginas;
+    document.getElementById("titulo").value = livro.titulo;
+    document.getElementById("autor").value = livro.autor;
+    document.getElementById("qtpaginas").value = livro.qtpaginas;
+  }
+}
+async function emprestarLivro(id) {
+  if (confirm("Deseja realmente emprestar o livro?")) {
+    const options = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    let result = await fetch(apiUrl + "/livro/" + id + "/emprestar", options);
+    let json = await result.json();
+    console.log(json);
+
+    if (json.emprestado == 1) {
+      alert("Livro emprestado com sucesso!");
+      window.location.reload();
+    } else {
+      alert("Problemas ao emprestar o livro!");
+    }
+  }
+}
+
+async function devolverLivro(id) {
+  if (confirm("Deseja realmente devolver o livro?")) {
+    const options = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    let result = await fetch(apiUrl + "/livro/" + id + "/devolver", options);
+    let json = await result.json();
+    console.log(json);
+
+    if (json.emprestado == 1) {
+      alert("Livro devolvido com sucesso!");
+      window.location.reload();
+    } else {
+      alert("Problemas ao devolver o livro!");
+    }
   }
 }
