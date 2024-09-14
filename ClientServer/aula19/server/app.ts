@@ -230,7 +230,6 @@ const serverInstance = server.listen(port, () => {
   console.log("Server iniciado na porta " + port);
 });
 
-// Graceful shutdown
 const gracefulShutdown = () => {
   console.log("\nServer is closing...");
   serverInstance.close(() => {
@@ -240,6 +239,5 @@ const gracefulShutdown = () => {
   });
 };
 
-// Handle termination signals
 process.on("SIGTERM", gracefulShutdown);
 process.on("SIGINT", gracefulShutdown);
