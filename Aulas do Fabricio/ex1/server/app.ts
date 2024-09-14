@@ -1,6 +1,9 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import { FormaPagamento } from "./FormaPagamento";
+import { Usuario } from "./Usuario";
+import { dbQuery, client } from "./database";
+import { UnidadeMedida } from "./UnidadeMedida";
 
 const port: Number = 3000;
 let server: Express = express();
@@ -8,39 +11,26 @@ let server: Express = express();
 server.use(cors());
 server.use(express.json());
 
-interface usuariosAdminInterface {
-  id: number;
-  user: string;
-  password: string;
-}
+let success = {
+  insert: "Dado inserido com sucesso!",
+  update: "Dado atualizado com sucesso!",
+  delete: "Dado deletado com sucesso!",
+};
 
-let usuariosADM: usuariosAdminInterface[] = [
-  {
-    id: 1,
-    user: "admin",
-    password: "admin",
-  },
-  {
-    id: 2,
-    user: "admin2",
-    password: "admin2",
-  },
-];
-
-let formasPagamentos: FormaPagamento[] = [];
+// NOTE <-- Forma de pagamento -->
 
 // NOTE Criar formas de pagamento
 server.post(
   "/formaDePagamento",
   async (req: Request, res: Response): Promise<Response> => {
     let formaPagamento = new FormaPagamento();
+    let sql = "INSERT INTO forma_de_pagamento (nome) VALUES ($1) ";
 
-    formaPagamento.id = formasPagamentos.length;
     formaPagamento.name = req.body.name;
 
-    formasPagamentos.push(formaPagamento);
+    let result = await dbQuery(sql, [formaPagamento.name]);
 
-    return res.status(200).json(formasPagamentos);
+    return res.status(200).json(success.insert);
   }
 );
 
@@ -48,23 +38,25 @@ server.post(
 server.get(
   "/formaDePagamento",
   async (req: Request, res: Response): Promise<Response> => {
-    return res.status(200).json(formasPagamentos);
+    let sql = "SELECT * FROM forma_de_pagamento";
+    let result = await dbQuery(sql);
+    return res.status(200).json(result);
   }
 );
 
-// NOTE listar apenas uma forma de pagamento
+// NOTE Pegar uma forma de pagamento
 server.get(
   "/formaDePagamento/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
+    let sql = "SELECT * FROM forma_de_pagamento WHERE id = $1";
 
-    if (id >= 0 && id < formasPagamentos.length) {
-      return res.status(200).json(formasPagamentos[id]);
+    if (id > 0) {
+      let result = await dbQuery(sql, [id]);
+      return res.status(200).json(result);
     }
     let erro = {
-      erro:
-        "Não foi possivel encontrar um livro com o codigo digitado, tente um código de 0 até " +
-        (formasPagamentos.length - 1),
+      erro: "Não foi possivel encontrar a forma de pagamento",
     };
     return res.status(400).json(erro);
   }
@@ -76,17 +68,19 @@ server.put(
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
 
-    if (id >= 0 && id < formasPagamentos.length) {
-      let formaPagamento = formasPagamentos[id];
+    let sql = "UPDATE forma_de_pagamento SET NAME = $2 WHERE id = $1";
+
+    if (id > 0) {
+      let formaPagamento: FormaPagamento = new FormaPagamento();
 
       formaPagamento.name = req.body.name;
 
-      return res.status(200).json(formasPagamentos[id]);
+      let result = await dbQuery(sql, [id, formaPagamento.name]);
+
+      return res.status(200).json(success.update);
     }
     let erro = {
-      erro:
-        "Não foi possivel encontrar um livro com o codigo digitado, tente um código entre 0 e " +
-        formasPagamentos.length,
+      erro: "Não foi possivel encontrar a forma de pagamento",
     };
     return res.status(400).json(erro);
   }
@@ -98,26 +92,163 @@ server.delete(
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
 
-    if (id >= 0 && id < formasPagamentos.length) {
-      delete formasPagamentos[id];
-      return res.status(200).json("Forma de pagamento deletada com sucesso!");
+    let sql = "DELETE FROM forma_de_pagamento WHERE id = $1";
+
+    if (id > 0) {
+      let result = await dbQuery(sql, [id]);
+      return res.status(200).json(success.delete);
     }
     let erro = {
-      erro:
-        "Não foi possivel encontrar um livro com o codigo digitado, tente um código entre 0 e " +
-        formasPagamentos.length,
+      erro: "Não foi possivel encontrar a forma de pagamento",
     };
     return res.status(400).json(erro);
   }
 );
 
-server.get(
+// NOTE <-- Usuario -->
+
+// NOTE Validar usuario de adm
+server.post(
   "/usersADM",
   async (req: Request, res: Response): Promise<Response> => {
-    return res.status(200).json(usuariosADM);
+    let usuario = new Usuario();
+
+    usuario.username = req.body.username;
+    usuario.password = req.body.password;
+
+    console.log(usuario.username);
+    console.log(usuario.password);
+
+    let sql =
+      "SELECT * FROM users WHERE username = $1 AND password = crypt($2, password)";
+
+    if (usuario.username.length > 0 && usuario.password.length > 0) {
+      let result = await dbQuery(sql, [usuario.username, usuario.password]);
+      console.log(result);
+      if (result.length == 0) {
+        let erro = {
+          erro: "Usuário ou senha estão incorretos!",
+        };
+        return res.status(400).json(erro);
+      }
+      let confirm = {
+        confirm: "Login efetuado com sucesso!",
+      };
+      return res.status(200).json(confirm);
+    }
+    let erro = {
+      erro: "Um dos campos estão vazios, verifique novamente!",
+    };
+    return res.status(400).json(erro);
   }
 );
 
-server.listen(port, () => {
+// NOTE <-- Unidade de medida -->
+
+// NOTE Listar unidades de medida
+server.get(
+  "/unidadeMedida",
+  async (req: Request, res: Response): Promise<Response> => {
+    let sql = "SELECT * FROM unidade_medida";
+    let result = await dbQuery(sql);
+    return res.status(200).json(result);
+  }
+);
+
+// NOTE Pegar uma unidade de medida
+server.get(
+  "/unidadeMedida/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    let id = Number(req.params.id);
+    let sql = "SELECT * FROM unidade_medida where id = $1";
+
+    if (id > 0) {
+      let result = await dbQuery(sql, [id]);
+      return res.status(200).json(result);
+    }
+
+    let erro = {
+      erro: "Não foi possivel encontrar a unidade de medida",
+    };
+    return res.status(400).json(erro);
+  }
+);
+
+// NOTE Criar unidade de medida
+server.post(
+  "/unidadeMedida",
+  async (req: Request, res: Response): Promise<Response> => {
+    let unidade: UnidadeMedida = new UnidadeMedida();
+    unidade.name = req.body.name;
+
+    let sql = "INSERT INTO unidade_medida (name) VALUES ($1)";
+    if (unidade.name.length > 0 && unidade.name.length <= 2) {
+      let result = await dbQuery(sql, [unidade.name]);
+      return res.status(200).json(success.insert);
+    }
+    let erro = {
+      erro: "Insira um valor de no máximo 2 letras!",
+    };
+    return res.status(400).json(erro);
+  }
+);
+
+// NOTE Atualizar unidade de medida
+server.put(
+  "/unidadeMedida/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    let id = Number(req.params.id);
+    let unidade: UnidadeMedida = new UnidadeMedida();
+    unidade.name = req.body.name;
+
+    let sql = "UPDATE unidade_medida SET name= $2 WHERE id = $1";
+
+    if (id > 0) {
+      let result = await dbQuery(sql, [id, unidade.name]);
+      return res.status(200).json(success.update);
+    }
+
+    let erro = {
+      erro: "Não foi possivel encontrar a unidade de medida",
+    };
+    return res.status(400).json(erro);
+  }
+);
+
+// NOTE Deletar unidade de medida
+server.delete(
+  "/unidadeMedida/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    let id = Number(req.params.id);
+
+    let sql = "DELETE FROM unidade_medida WHERE id = $1";
+
+    if (id > 0) {
+      let result = await dbQuery(sql, [id]);
+      return res.status(200).json(success.delete);
+    }
+
+    let erro = {
+      erro: "Não foi possivel encontrar a unidade de medida",
+    };
+    return res.status(400).json(erro);
+  }
+);
+
+// NOTE <-- Servidor (não mexer) -->
+
+const serverInstance = server.listen(port, () => {
   console.log("Server iniciado na porta " + port);
 });
+
+const gracefulShutdown = () => {
+  console.log("\nServer is closing...");
+  serverInstance.close(() => {
+    console.log("Server closed successfully");
+    client.end();
+    process.exit(0);
+  });
+};
+
+process.on("SIGTERM", gracefulShutdown);
+process.on("SIGINT", gracefulShutdown);

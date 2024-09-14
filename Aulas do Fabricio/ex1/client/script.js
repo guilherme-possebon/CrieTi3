@@ -2,34 +2,36 @@ let apiUrl = "http://localhost:3000";
 
 // NOTE Login
 async function login() {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  const raw = JSON.stringify({
+    username: document.getElementById("username").value,
+    password: document.getElementById("password").value,
+  });
+
   const requestOptions = {
-    method: "GET",
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
     redirect: "follow",
   };
 
-  let result = await fetch(apiUrl + "/usersADM", requestOptions);
-  let resultUsers = await result.json();
+  let result = await fetch("http://localhost:3000/usersADM", requestOptions);
 
-  console.log(resultUsers);
+  console.log(result);
 
-  let userName = document.getElementById("user").value;
-  let password = document.getElementById("password").value;
-
-  let user = resultUsers.find(
-    (u) => u.user === userName && u.password === password
-  );
-
-  if (user) {
+  if (result.ok) {
     window.location = "/client/home.html";
     isLoged(true);
   } else {
     document.getElementById("password").classList.remove("input-colors");
-    document.getElementById("user").classList.remove("input-colors");
+    document.getElementById("username").classList.remove("input-colors");
     document.getElementById("labelPassword").classList.remove("label-colors");
     document.getElementById("labelUser").classList.remove("label-colors");
 
     document.getElementById("password").classList.add("input-danger");
-    document.getElementById("user").classList.add("input-danger");
+    document.getElementById("username").classList.add("input-danger");
     document.getElementById("labelPassword").classList.add("label-danger");
     document.getElementById("labelUser").classList.add("label-danger");
 
