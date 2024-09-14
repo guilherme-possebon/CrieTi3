@@ -24,7 +24,7 @@ server.post(
   "/formaDePagamento",
   async (req: Request, res: Response): Promise<Response> => {
     let formaPagamento = new FormaPagamento();
-    let sql = "INSERT INTO forma_de_pagamento (nome) VALUES ($1) ";
+    let sql = "INSERT INTO forma_de_pagamento (name) VALUES ($1) ";
 
     formaPagamento.name = req.body.name;
 
@@ -38,7 +38,7 @@ server.post(
 server.get(
   "/formaDePagamento",
   async (req: Request, res: Response): Promise<Response> => {
-    let sql = "SELECT * FROM forma_de_pagamento";
+    let sql = "SELECT * FROM forma_de_pagamento order by id";
     let result = await dbQuery(sql);
     return res.status(200).json(result);
   }
@@ -53,7 +53,7 @@ server.get(
 
     if (id > 0) {
       let result = await dbQuery(sql, [id]);
-      return res.status(200).json(result);
+      return res.status(200).json(result[0]);
     }
     let erro = {
       erro: "Não foi possivel encontrar a forma de pagamento",
@@ -68,13 +68,16 @@ server.put(
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
 
-    let sql = "UPDATE forma_de_pagamento SET NAME = $2 WHERE id = $1";
+    let sql = "UPDATE forma_de_pagamento SET name = $2 WHERE id = $1";
+    let formaPagamento: FormaPagamento = new FormaPagamento();
 
-    if (id > 0) {
-      let formaPagamento: FormaPagamento = new FormaPagamento();
+    formaPagamento.name = req.body.name;
 
-      formaPagamento.name = req.body.name;
-
+    if (
+      id > 0 &&
+      formaPagamento.name.length > 0 &&
+      formaPagamento.name.length <= 2
+    ) {
       let result = await dbQuery(sql, [id, formaPagamento.name]);
 
       return res.status(200).json(success.update);
@@ -147,9 +150,9 @@ server.post(
 
 // NOTE Listar unidades de medida
 server.get(
-  "/unidadeMedida",
+  "/unidademedida",
   async (req: Request, res: Response): Promise<Response> => {
-    let sql = "SELECT * FROM unidade_medida";
+    let sql = "SELECT * FROM unidade_medida order by id";
     let result = await dbQuery(sql);
     return res.status(200).json(result);
   }
@@ -157,14 +160,14 @@ server.get(
 
 // NOTE Pegar uma unidade de medida
 server.get(
-  "/unidadeMedida/:id",
+  "/unidademedida/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
     let sql = "SELECT * FROM unidade_medida where id = $1";
 
     if (id > 0) {
       let result = await dbQuery(sql, [id]);
-      return res.status(200).json(result);
+      return res.status(200).json(result[0]);
     }
 
     let erro = {
@@ -176,7 +179,7 @@ server.get(
 
 // NOTE Criar unidade de medida
 server.post(
-  "/unidadeMedida",
+  "/unidademedida",
   async (req: Request, res: Response): Promise<Response> => {
     let unidade: UnidadeMedida = new UnidadeMedida();
     unidade.name = req.body.name;
@@ -195,7 +198,7 @@ server.post(
 
 // NOTE Atualizar unidade de medida
 server.put(
-  "/unidadeMedida/:id",
+  "/unidademedida/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
     let unidade: UnidadeMedida = new UnidadeMedida();
@@ -203,9 +206,14 @@ server.put(
 
     let sql = "UPDATE unidade_medida SET name= $2 WHERE id = $1";
 
-    if (id > 0) {
+    if (id > 0 && unidade.name.length > 0 && unidade.name.length <= 2) {
       let result = await dbQuery(sql, [id, unidade.name]);
       return res.status(200).json(success.update);
+    } else if (unidade.name.length > 2) {
+      let erro = {
+        erro: "Insira um valor de no máximo 2 letras!",
+      };
+      return res.status(400).json(erro);
     }
 
     let erro = {
@@ -217,7 +225,7 @@ server.put(
 
 // NOTE Deletar unidade de medida
 server.delete(
-  "/unidadeMedida/:id",
+  "/unidademedida/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
 
