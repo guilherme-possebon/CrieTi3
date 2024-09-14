@@ -9,7 +9,7 @@
       src="https://kit.fontawesome.com/c4df1ef96d.js"
       crossorigin="anonymous"
     ></script>
-    <title>Forma de pagamento</title>
+    <title>Unidade de medida</title>
   </head>
   <body>
     <nav class="bg-gray-900 border-gray-700">
@@ -66,7 +66,7 @@
               >
             </li>
             <li>
-              <a href="/client/unidademedida.html" class="link available"
+              <a href="/client/unidademedida.html" class="link current"
                 ><i class="fa-solid fa-scale-unbalanced"></i> Unidade de
                 medida</a
               >
@@ -82,7 +82,7 @@
               >
             </li>
             <li>
-              <a href="/client/formapagamento.html" class="link current"
+              <a href="/client/formapagamento.html" class="link available"
                 ><i class="fa-solid fa-credit-card"></i> Formas de pagamento</a
               >
             </li>
@@ -95,10 +95,10 @@
       <div class="text-center m-5">
         <h2>
           <a
-            href="adicionarformapagameto.html"
+            href="adicionarunidademedida.html"
             class="text-xl font-bold text-center m-5 cursor-pointer hover:text-blue-500 underline"
           >
-            Adicionar forma de pagamento
+            Adicionar unidade de medida
           </a>
         </h2>
       </div>
@@ -107,19 +107,19 @@
           <thead class="table-header">
             <tr>
               <th class="table-header-cell">Id</th>
-              <th class="table-header-cell">Formas de pagamento</th>
+              <th class="table-header-cell">Unidade de medida</th>
               <th class="table-header-cell">Editar</th>
               <th class="table-header-cell">Excluir</th>
             </tr>
           </thead>
-          <tbody id="tbodyFormasPagamentos"></tbody>
+          <tbody id="tbodyUnidadeMedida"></tbody>
         </table>
       </div>
     </div>
 
     <script src="script.js"></script>
     <script>
-      showPaymentOptions();
+      showUnitOfMeasurement();
       checkLoginStatus();
     </script>
   </body>

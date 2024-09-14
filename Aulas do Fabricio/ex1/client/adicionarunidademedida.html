@@ -9,9 +9,9 @@
       src="https://kit.fontawesome.com/c4df1ef96d.js"
       crossorigin="anonymous"
     ></script>
-    <title>Forma de pagamento</title>
+    <title>Adicionar unidade de medida</title>
   </head>
-  <body>
+  <body class="h-screen">
     <nav class="bg-gray-900 border-gray-700">
       <div
         class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
@@ -66,7 +66,7 @@
               >
             </li>
             <li>
-              <a href="/client/unidademedida.html" class="link available"
+              <a href="/client/unidademedida.html" class="link current"
                 ><i class="fa-solid fa-scale-unbalanced"></i> Unidade de
                 medida</a
               >
@@ -82,7 +82,7 @@
               >
             </li>
             <li>
-              <a href="/client/formapagamento.html" class="link current"
+              <a href="/client/formapagamento.html" class="link available"
                 ><i class="fa-solid fa-credit-card"></i> Formas de pagamento</a
               >
             </li>
@@ -91,35 +91,50 @@
       </div>
     </nav>
 
-    <div class="flex-grow flex items-center justify-center flex-col">
-      <div class="text-center m-5">
-        <h2>
-          <a
-            href="adicionarformapagameto.html"
-            class="text-xl font-bold text-center m-5 cursor-pointer hover:text-blue-500 underline"
+    <h1 class="text-xl font-bold text-center m-5" id="h1">
+      Adicionar unidade de medida
+    </h1>
+
+    <form
+      onsubmit="saveUnitOfMeasurement()"
+      method="dialog"
+      class="flex items-center justify-center flex-col"
+    >
+      <div class="w-[200px]">
+        <div class="w-full">
+          <div class="relative my-4">
+            <input
+              type="text"
+              id="name"
+              class="input input-colors peer"
+              placeholder=" "
+              autofocus
+              maxlength="2"
+            />
+            <label
+              for="name"
+              id="labelName"
+              class="label label-colors peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+              >Nome</label
+            >
+          </div>
+        </div>
+        <div class="flex justify-between w-full">
+          <button type="submit" class="btn btn-primary">Salvar</button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            onclick="window.location = '/client/unidademedida.html'"
           >
-            Adicionar forma de pagamento
-          </a>
-        </h2>
+            Cancelar
+          </button>
+        </div>
       </div>
-      <div class="flex justify-center items-center mt-5">
-        <table class="table mb-10">
-          <thead class="table-header">
-            <tr>
-              <th class="table-header-cell">Id</th>
-              <th class="table-header-cell">Formas de pagamento</th>
-              <th class="table-header-cell">Editar</th>
-              <th class="table-header-cell">Excluir</th>
-            </tr>
-          </thead>
-          <tbody id="tbodyFormasPagamentos"></tbody>
-        </table>
-      </div>
-    </div>
+    </form>
 
     <script src="script.js"></script>
     <script>
-      showPaymentOptions();
+      loadUnitOfMeasurement();
       checkLoginStatus();
     </script>
   </body>
