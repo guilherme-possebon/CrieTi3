@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "npx tailwindcss -i ./ex1-copia/client/style.css -o ./ex1-copia/client/output.css --watch"
+    "dev": "npx tailwindcss -i ./ex1/client/style.css -o ./ex1/client/output.css --watch"
   },
   "dependencies": {
     "@types/cors": "^2.8.17",

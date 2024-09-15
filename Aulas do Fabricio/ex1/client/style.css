@@ -65,11 +65,11 @@ body {
 }
 
 .table-container {
-  @apply flex justify-center items-center mt-5;
+  @apply flex justify-center items-center max-w-[800px] w-full;
 }
 
 .table {
-  @apply w-[800px] bg-gray-800 border border-gray-700 rounded-lg shadow-md table-fixed;
+  @apply w-full bg-gray-800 border border-gray-700 rounded-lg shadow-md table-fixed m-10;
 }
 
 .table-header {

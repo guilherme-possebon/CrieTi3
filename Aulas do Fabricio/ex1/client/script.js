@@ -4,9 +4,10 @@ let apiUrl = "http://localhost:3000";
 async function login() {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
+  let username = document.getElementById("username").value;
 
   const raw = JSON.stringify({
-    username: document.getElementById("username").value,
+    username,
     password: document.getElementById("password").value,
   });
 
@@ -17,13 +18,13 @@ async function login() {
     redirect: "follow",
   };
 
-  let result = await fetch("http://localhost:3000/usersADM", requestOptions);
+  let result = await fetch(apiUrl + "/usersADM", requestOptions);
 
   console.log(result);
 
   if (result.ok) {
     window.location = "/client/home.html";
-    isLoged(true);
+    isLoged(true, username);
   } else {
     document.getElementById("password").classList.remove("input-colors");
     document.getElementById("username").classList.remove("input-colors");
@@ -41,9 +42,10 @@ async function login() {
   }
 }
 // NOTE Is loged
-function isLoged(status) {
+function isLoged(status, username) {
   if (status) {
     localStorage.setItem("auth_token", "authenticated");
+    localStorage.setItem("username", username);
   } else {
     localStorage.removeItem("auth_token");
   }
@@ -55,6 +57,13 @@ function checkLoginStatus() {
   if (!token) {
     window.location = "/client/index.html";
   }
+}
+
+// NOTE Show username
+function showUsername() {
+  const username = localStorage.getItem("username");
+  document.getElementById("beWelcome").innerHTML =
+    "Seja bem vindo, " + username + "!";
 }
 
 // NOTE Show payment options
@@ -78,8 +87,8 @@ async function showPaymentOptions() {
         <tr class="table-row-hover">
           <td class="table-body-cell">${paymentOption.id}</td>
           <td class="table-body-cell">${paymentOption.name}</td>
-          <td class="table-body-cell">${editar}</td>
-          <td class="table-body-cell">${excluir}</td>
+          <td class="table-body-cell flex flex-col items-center gap-4">${editar} ${excluir}</td>
+
         </tr>
       `;
       console.log(paymentOption);
@@ -202,8 +211,7 @@ async function showUnitOfMeasurement() {
         <tr class="table-row-hover">
           <td class="table-body-cell">${unitOption.id}</td>
           <td class="table-body-cell">${unitOption.name}</td>
-          <td class="table-body-cell">${editar}</td>
-          <td class="table-body-cell">${excluir}</td>
+          <td class="table-body-cell flex flex-col items-center gap-4">${editar} ${excluir}</td>
         </tr>
       `;
       console.log(unitOption);
