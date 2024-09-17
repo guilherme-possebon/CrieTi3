@@ -1,5 +1,4 @@
 import { Client } from "pg";
-console.log("conexão");
 
 export const client: Client = new Client({
   user: "postgres",

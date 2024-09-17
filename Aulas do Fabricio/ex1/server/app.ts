@@ -119,15 +119,11 @@ server.post(
     usuario.username = req.body.username;
     usuario.password = req.body.password;
 
-    console.log(usuario.username);
-    console.log(usuario.password);
-
     let sql =
       "SELECT * FROM users WHERE username = $1 AND password = crypt($2, password)";
 
     if (usuario.username.length > 0 && usuario.password.length > 0) {
       let result = await dbQuery(sql, [usuario.username, usuario.password]);
-      console.log(result);
       if (result.length == 0) {
         let erro = {
           erro: "Usuário ou senha estão incorretos!",
@@ -245,14 +241,10 @@ server.delete(
 
 // NOTE <-- Servidor (não mexer) -->
 
-const serverInstance = server.listen(port, () => {
-  console.log("Server iniciado na porta " + port);
-});
+const serverInstance = server.listen(port, () => {});
 
 const gracefulShutdown = () => {
-  console.log("\nServer is closing...");
   serverInstance.close(() => {
-    console.log("Server closed successfully");
     client.end();
     process.exit(0);
   });

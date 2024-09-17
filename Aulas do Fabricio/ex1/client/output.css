@@ -777,7 +777,7 @@ body {
 }
 
 .table {
-  margin: 2.5rem;
+  margin: 0.75rem;
   width: 100%;
   table-layout: fixed;
   border-radius: 0.5rem;
@@ -791,7 +791,15 @@ body {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+@media (min-width: 768px) {
+  .table {
+    margin: 2.5rem;
+  }
+}
+
 .table-header {
+  position: sticky;
+  top: -1px;
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
@@ -804,8 +812,6 @@ body {
   border-color: rgb(75 85 99 / var(--tw-border-opacity));
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
   text-align: center;
 }
 
@@ -815,8 +821,6 @@ body {
   border-color: rgb(75 85 99 / var(--tw-border-opacity));
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
   text-align: center;
 }
 

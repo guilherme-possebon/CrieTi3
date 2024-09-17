@@ -289,7 +289,7 @@ async function removerViagem(idpessoa, id) {
   let json = await result.json();
 
   if (json === "Ok") {
-    alert("Viagem adicionada com sucesso!");
+    alert("Viagem removida com sucesso!");
     listarPessoas();
   } else {
     alert("Deu problema filhote!");

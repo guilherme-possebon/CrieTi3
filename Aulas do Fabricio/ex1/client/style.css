@@ -69,19 +69,19 @@ body {
 }
 
 .table {
-  @apply w-full bg-gray-800 border border-gray-700 rounded-lg shadow-md table-fixed m-10;
+  @apply w-full bg-gray-800 border border-gray-700 rounded-lg shadow-md table-fixed m-3 md:m-10;
 }
 
 .table-header {
-  @apply bg-gray-700 text-gray-200;
+  @apply bg-gray-700 text-gray-200 sticky top-[-1px];
 }
 
 .table-header-cell {
-  @apply py-3 px-4 border-b border-gray-600 text-center;
+  @apply py-3 border-b border-gray-600 text-center;
 }
 
 .table-body-cell {
-  @apply py-3 px-4 border-b border-gray-600 text-center;
+  @apply py-3 border-b border-gray-600 text-center;
 }
 
 .table-row-hover:hover {

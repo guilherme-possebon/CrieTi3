@@ -20,8 +20,6 @@ async function login() {
 
   let result = await fetch(apiUrl + "/usersADM", requestOptions);
 
-  console.log(result);
-
   if (result.ok) {
     window.location = "/client/home.html";
     isLoged(true, username);
@@ -80,7 +78,6 @@ async function showPaymentOptions() {
   for (let index = 0; index < paymentsOptions.length; index++) {
     let paymentOption = paymentsOptions[index];
     if (paymentOption !== null) {
-      console.log(paymentOption, 123123123);
       let editar = `<button onclick="goToPaymentEditPage(${paymentOption.id})" class="btn btn-success">Editar</button>`;
       let excluir = `<button onclick="deletePaymentOption(${paymentOption.id})" class="btn btn-danger">Excluir</button>`;
       html += `
@@ -91,7 +88,6 @@ async function showPaymentOptions() {
 
         </tr>
       `;
-      console.log(paymentOption);
     }
   }
   document.getElementById("tbodyFormasPagamentos").innerHTML = html;
@@ -166,8 +162,6 @@ async function loadPaymentOption() {
     let paymentoResult = await result.json();
 
     document.getElementById("name").value = paymentoResult.name;
-
-    console.log(paymentoResult);
   }
 }
 
@@ -184,8 +178,6 @@ async function deletePaymentOption(id) {
       requestOptions
     );
     let deleteResult = await result.json();
-
-    console.log(deleteResult);
 
     showPaymentOptions();
   }
@@ -214,7 +206,6 @@ async function showUnitOfMeasurement() {
           <td class="table-body-cell flex flex-col items-center gap-4">${editar} ${excluir}</td>
         </tr>
       `;
-      console.log(unitOption);
     }
   }
   document.getElementById("tbodyUnidadeMedida").innerHTML = html;
@@ -270,8 +261,6 @@ async function loadUnitOfMeasurement() {
     let paymentoResult = await result.json();
 
     document.getElementById("name").value = paymentoResult.name;
-
-    console.log(paymentoResult);
   }
 }
 
@@ -285,8 +274,6 @@ async function deleteUnit(id) {
 
     let result = await fetch(apiUrl + "/unidademedida/" + id, requestOptions);
     let deleteResult = await result.json();
-
-    console.log(deleteResult);
 
     showUnitOfMeasurement();
   }
