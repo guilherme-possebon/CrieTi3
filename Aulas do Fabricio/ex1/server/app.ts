@@ -241,7 +241,9 @@ server.delete(
 
 // NOTE <-- Servidor (não mexer) -->
 
-const serverInstance = server.listen(port, () => {});
+const serverInstance = server.listen(port, () => {
+  console.log("Rodando na porta: " + port);
+});
 
 const gracefulShutdown = () => {
   serverInstance.close(() => {

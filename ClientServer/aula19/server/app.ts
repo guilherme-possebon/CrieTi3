@@ -15,9 +15,8 @@ server.use(express.json());
 server.get(
   "/pessoa",
   async (req: Request, res: Response): Promise<Response> => {
-    let sql = "select * from pessoas order by id";
-    let result = await dbQuery(sql);
-    return res.status(200).json(result);
+    let pessoas = await Pessoa.listAll();
+    return res.status(200).json(pessoas);
   }
 );
 
@@ -25,12 +24,11 @@ server.get(
 server.get(
   "/pessoa/:id",
   async (req: Request, res: Response): Promise<Response> => {
-    let id: number = Number(req.params.id);
+    let id = Number(req.params.id);
+    let pessoa = await Pessoa.findOneById(id);
 
-    if (id > 0) {
-      let sql = "SELECT * FROM pessoas WHERE id = $1 LIMIT 1;";
-      let result = await dbQuery(sql, [id]);
-      return res.status(200).json(result);
+    if (pessoa != null) {
+      return res.status(200).json(pessoa);
     }
 
     let erro = {
@@ -48,24 +46,28 @@ server.post(
   async (req: Request, res: Response): Promise<Response> => {
     let pessoa: Pessoa = new Pessoa();
 
-    let sql =
-      "insert into pessoas (nome, cpf, idade, siglauf, cidade) values ($1, $2, $3, $4, $5)";
-
     pessoa.nome = req.body.nome;
-    pessoa.cpf = req.body.cpf;
+    pessoa.cpf = req.body.cpf.replace(/\D/g, "");
     pessoa.idade = req.body.idade;
     pessoa.siglauf = req.body.siglauf;
     pessoa.cidade = req.body.cidade;
 
-    let result = await dbQuery(sql, [
-      pessoa.nome,
-      pessoa.cpf,
-      pessoa.idade,
-      pessoa.siglauf,
-      pessoa.cidade,
-    ]);
+    let erros: string[] = pessoa.validate();
 
-    return res.status(200).json("Ok");
+    if (erros.length > 0) {
+      let json = { erros: erros };
+      return res.status(400).json(json);
+    }
+
+    await pessoa.insert();
+
+    if (pessoa.id) {
+      return res.status(200).json(pessoa);
+    }
+
+    let erro = { id: null, erro: "Erro ao inserir pessoa." };
+
+    return res.status(400).json(erro);
   }
 );
 
@@ -73,37 +75,35 @@ server.post(
 server.put(
   "/pessoa/:id",
   async (req: Request, res: Response): Promise<Response> => {
-    let id: number = Number(req.params.id);
+    let id = Number(req.params.id);
+    let pessoa = await Pessoa.findOneById(id);
 
-    let sql =
-      "update pessoas set nome = $2, cpf = $3, idade = $4, siglauf = $5, cidade = $6 where id = %1 ";
-
-    if (id > 0) {
-      let pessoa: Pessoa = new Pessoa();
-
-      pessoa.nome = req.body.nome;
-      pessoa.cpf = req.body.cpf;
-      pessoa.idade = req.body.idade;
-      pessoa.cidade = req.body.cidade;
-      pessoa.siglauf = req.body.siglauf;
-
-      let result = await dbQuery(sql, [
-        pessoa.id,
-        pessoa.nome,
-        pessoa.cpf,
-        pessoa.idade,
-        pessoa.siglauf,
-        pessoa.cidade,
-      ]);
-
-      return res.status(200).json("Ok");
+    if (pessoa == null) {
+      let erro = { id: id, erro: "Pessoa não encontrada." };
+      return res.status(400).json(erro);
     }
 
-    let erro = {
-      id: id,
-      erro: "Id da pessoa não foi encontrada.",
-    };
+    pessoa.nome = req.body.nome;
+    pessoa.cpf = req.body.cpf.replace(/\D/g, "");
+    pessoa.idade = req.body.idade;
+    pessoa.cidade = req.body.cidade;
+    pessoa.siglauf = req.body.siglauf;
+    console.log(pessoa);
 
+    let erros: string[] = pessoa.validate();
+
+    if (erros.length > 0) {
+      let json = { erros: erros };
+      return res.status(400).json(json);
+    }
+
+    pessoa.update();
+
+    if (pessoa.id) {
+      return res.status(200).json(pessoa);
+    }
+
+    let erro = { id: id, erro: "Erro ao editar pessoa." };
     return res.status(400).json(erro);
   }
 );
@@ -112,15 +112,14 @@ server.put(
 server.delete(
   "/pessoa/:id",
   async (req: Request, res: Response): Promise<Response> => {
-    let id: number = Number(req.params.id);
+    let id = Number(req.params.id);
+    let pessoa = await Pessoa.findOneById(id);
 
-    let sqlPessoa = "delete from pessoas where id = $1";
-    let sqlViagem = "delete from viagens where idpessoa = $1";
+    if (pessoa != null) {
+      await pessoa?.delete();
 
-    if (id > 0) {
-      let resultViagem = await dbQuery(sqlViagem, [id]);
-      let resultPessoa = await dbQuery(sqlPessoa, [id]);
-      return res.status(200).json("Ok");
+      let retorno = { okay: true };
+      return res.status(200).json(retorno);
     }
 
     let erro = {
@@ -136,9 +135,9 @@ server.delete(
 server.get(
   "/pessoa/:id/viagens",
   async (req: Request, res: Response): Promise<Response> => {
-    let sql = "select * from viagens order by id";
-    let result = await dbQuery(sql);
-    return res.status(200).json(result);
+    let viagens = await Viagem.findAll();
+
+    return res.status(200).json(viagens);
   }
 );
 
@@ -146,83 +145,93 @@ server.get(
 server.post(
   "/pessoa/:id/adicionarviagem",
   async (req: Request, res: Response): Promise<Response> => {
-    let id: number = Number(req.params.id);
-    let viagem: Viagem = new Viagem();
+    let id = Number(req.params.id);
+    let pessoa = await Pessoa.findOneById(id);
 
-    let sql =
-      "insert into viagens (idpessoa, destino, datahorapartida, datahorachegada) values ($1, $2, $3, $4)";
+    if (pessoa == null) {
+      let erro = { id: id, erro: "Pessoa não encontrada." };
 
-    try {
-      if (id > 0) {
-        viagem.id = viagem.idPessoa = id;
-        viagem.destino = req.body.destino;
-        if (
-          req.body.datahorapartida === null ||
-          req.body.datahorachegada === null
-        ) {
-          let erro = {
-            erro: "Formato de data está errado, tente encaixar nesse formato: YYYY-MM-DDTHH:MM:SSZ",
-          };
-          return res.status(400).json(erro);
-        } else {
-          viagem.datahorapartida = new Date(req.body.datahorapartida);
-          viagem.datahorachegada = new Date(req.body.datahorachegada);
-        }
-
-        let result = await dbQuery(sql, [
-          viagem.idPessoa,
-          viagem.destino,
-          viagem.datahorapartida,
-          viagem.datahorachegada,
-        ]);
-
-        return res.status(200).json("Ok");
-      }
-    } catch (error) {
-      let erro = {
-        erro: "Verifique o id da pessoa!",
-      };
       return res.status(400).json(erro);
     }
 
-    let erro = {
-      id: id,
-      erro: "Id da pessoa não foi encontrada.",
-    };
+    let viagem = new Viagem();
+    viagem.idpessoa = id;
+    viagem.destino = req.body.destino;
+    viagem.datahorapartida = new Date(req.body.datahorapartida);
+    viagem.datahorachegada = new Date(req.body.datahorachegada);
 
+    await viagem.insert();
+
+    if (viagem.id) {
+      pessoa.viagens.push(viagem);
+      return res.status(200).json(pessoa);
+    }
+
+    let erro = { id: id, erro: "Erro ao inserir viagem." };
     return res.status(400).json(erro);
   }
 );
 
 // NOTE Remover uma viagem
 server.delete(
-  "/pessoa/:idpessoa/removerviagem/:id",
+  "/pessoa/:id/removerviagem/:idViagem",
   async (req: Request, res: Response): Promise<Response> => {
-    let idpessoa: number = Number(req.params.idpessoa);
-    let id: number = Number(req.params.id);
-    console.log(idpessoa, "id pessoa");
-    console.log(id, "id viagem");
-    let sql = "delete from viagens where id = $1";
+    let id = Number(req.params.id);
+    let idViagem = Number(req.params.idViagem);
+    let pessoa = await Pessoa.findOneById(id);
 
-    if (idpessoa > 0) {
-      if (id > 0) {
-        let result = await dbQuery(sql, [id]);
-        return res.status(200).json("Ok");
-      }
+    if (pessoa == null) {
       let erro = {
         id: id,
-        erro: "Posição da viagem não foi encontrada.",
+        posicao: idViagem,
+        erro: "Pessoa não encontrada.",
       };
 
       return res.status(400).json(erro);
     }
 
-    let erro = {
-      id: idpessoa,
-      erro: "Id da pessoa não foi encontrada.",
-    };
+    let viagem = await Viagem.findOneById(idViagem);
 
-    return res.status(400).json(erro);
+    if (viagem == null) {
+      let erro = {
+        id: id,
+        posicao: idViagem,
+        erro: "Viagem não encontrada.",
+      };
+
+      return res.status(400).json(erro);
+    }
+
+    console.log("idViagem=" + idViagem);
+    await viagem.delete();
+    let retorno = { okay: true };
+    return res.status(200).json(retorno);
+  }
+);
+
+// NOTE Listar uma viagem
+server.get(
+  "/viagem/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    let id = Number(req.params.id);
+    let viagem = await Viagem.findOneById(id);
+
+    if (viagem == null) {
+      let erro = { id: id, erro: "Viagem não encontrada." };
+
+      return res.status(400).json(erro);
+    }
+
+    return viagem;
+  }
+);
+
+// NOTE Listar viagens de acordo com o destino
+server.get(
+  "/viagem/destino/:destino",
+  async (req: Request, res: Response): Promise<Response> => {
+    let viagens = await Viagem.BuscarPorDestino(req.params.destino);
+    return res.status(200).json(viagens);
   }
 );
 

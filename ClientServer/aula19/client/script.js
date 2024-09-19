@@ -122,9 +122,13 @@ async function gravarPessoa() {
     let result = await fetch(apiUrl + url, options);
     let pessoaResult = await result.json();
 
+    console.log(pessoaResult);
+
     if (result.status == 200) {
       alert("Pessoa registrada com sucesso!");
       window.location = "/client/index.html";
+    } else if (pessoaResult.erros.length > 0) {
+      alert(pessoaResult.erros);
     }
   } else {
     alert("Preencha todos os campos requisitados");
@@ -146,19 +150,12 @@ async function excluirPessoa(id) {
 
     let result = await fetch(`${apiUrl}/pessoa/${id}`, requestOptions);
 
-    if (result.ok && result.headers.get("content-length") !== "0") {
-      let pessoaResult = await result.json();
-
-      if (pessoaResult == "Ok") {
-        alert("Pessoa excluída com sucesso");
-      } else {
-        alert("Problemas ao excluir a pessoa!");
-      }
+    if (result.ok) {
+      alert("Pessoa excluída com sucesso");
     } else {
-      alert("Pessoa excluída com sucesso!!!!!!!");
+      alert("Problemas ao excluir a pessoa!");
     }
 
-    // Refresh the list after deletion
     listarPessoas();
   }
 }
@@ -188,7 +185,7 @@ async function carregarPessoa() {
     document.getElementById("nome").value = pessoa.nome;
     document.getElementById("cpf").value = pessoa.cpf;
     document.getElementById("idade").value = pessoa.idade;
-    document.getElementById("siglauf").value = pessoa.siglaUftoUpperCase();
+    document.getElementById("siglauf").value = pessoa.siglauf.toUpperCase();
 
     await carregarCidades();
     document.getElementById("cidade").value = pessoa.cidade.toUpperCase();
@@ -263,9 +260,8 @@ async function gravarViagem() {
     apiUrl + "/pessoa/" + id + "/adicionarviagem",
     options
   );
-  let json = await result.json();
 
-  if (json == "Ok") {
+  if (result.ok) {
     alert("Viagem adicionada com sucesso!");
     window.location = "index.html";
   } else {
@@ -286,9 +282,8 @@ async function removerViagem(idpessoa, id) {
     apiUrl + "/pessoa/" + idpessoa + "/removerviagem/" + id,
     options
   );
-  let json = await result.json();
 
-  if (json === "Ok") {
+  if (result.ok) {
     alert("Viagem removida com sucesso!");
     listarPessoas();
   } else {
