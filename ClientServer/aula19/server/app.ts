@@ -88,7 +88,6 @@ server.put(
     pessoa.idade = req.body.idade;
     pessoa.cidade = req.body.cidade;
     pessoa.siglauf = req.body.siglauf;
-    console.log(pessoa);
 
     let erros: string[] = pessoa.validate();
 
@@ -202,7 +201,6 @@ server.delete(
       return res.status(400).json(erro);
     }
 
-    console.log("idViagem=" + idViagem);
     await viagem.delete();
     let retorno = { okay: true };
     return res.status(200).json(retorno);
@@ -235,14 +233,10 @@ server.get(
   }
 );
 
-const serverInstance = server.listen(port, () => {
-  console.log("Server iniciado na porta " + port);
-});
+const serverInstance = server.listen(port, () => {});
 
 const gracefulShutdown = () => {
-  console.log("\nServer is closing...");
   serverInstance.close(() => {
-    console.log("Server closed successfully");
     client.end();
     process.exit(0);
   });

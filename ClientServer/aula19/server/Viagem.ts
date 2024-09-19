@@ -43,7 +43,6 @@ export class Viagem {
   static async findOneById(id: number) {
     let sql = "SELECT * FROM viagens WHERE id = $1 LIMIT 1;";
     let resultado = await dbQuery(sql, [id]);
-    console.log(resultado);
 
     if (resultado.length > 0) {
       return Object.assign(new Viagem(), resultado[0]);

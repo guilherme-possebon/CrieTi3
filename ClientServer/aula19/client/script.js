@@ -38,7 +38,6 @@ async function listarPessoas() {
       viagem = viagens[index];
       if (viagem.idpessoa === pessoa.id) {
         const dataHoraPartidaString = viagem.datahorapartida;
-        console.log(viagem.datahorapartida);
         const dataHoraPartidaObj = new Date(dataHoraPartidaString);
         const dataHoraChegadaString = viagem.datahorachegada;
         const dataHoraChegadaObj = new Date(dataHoraChegadaString);
@@ -121,8 +120,6 @@ async function gravarPessoa() {
 
     let result = await fetch(apiUrl + url, options);
     let pessoaResult = await result.json();
-
-    console.log(pessoaResult);
 
     if (result.status == 200) {
       alert("Pessoa registrada com sucesso!");
@@ -274,9 +271,6 @@ async function removerViagem(idpessoa, id) {
     method: "DELETE",
     redirect: "follow",
   };
-
-  console.log(idpessoa, "Id pessoa");
-  console.log(id, "Id viagem");
 
   let result = await fetch(
     apiUrl + "/pessoa/" + idpessoa + "/removerviagem/" + id,
