@@ -119,22 +119,10 @@ server.post(
     usuario.username = req.body.username;
     usuario.password = req.body.password;
 
-    let sql =
-      "SELECT * FROM users WHERE username = $1 AND password = crypt($2, password)";
+    let result = await usuario.findUser(usuario.username, usuario.password);
 
-    if (usuario.username.length > 0 && usuario.password.length > 0) {
-      let result = await dbQuery(sql, [usuario.username, usuario.password]);
-      if (result.length == 0) {
-        let erro = {
-          erro: "Usuário ou senha estão incorretos!",
-        };
-        return res.status(400).json(erro);
-      }
-      let confirm = {
-        confirm: "Login efetuado com sucesso!",
-      };
-      return res.status(200).json(confirm);
-    }
+    console.log(result);
+
     let erro = {
       erro: "Um dos campos estão vazios, verifique novamente!",
     };

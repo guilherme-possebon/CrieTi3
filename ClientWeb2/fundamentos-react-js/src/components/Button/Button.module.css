@@ -1,0 +1,18 @@
+.btnPrimary {
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  background-color: var(--blue-500);
+  color: var(--gray-100);
+}
+
+.fadeDiv {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  overflow: hidden;
+}
+
+.fadeDiv.visible {
+  opacity: 1;
+  max-height: 100px;
+}

@@ -1,0 +1,15 @@
+.personAbout {
+  display: flex;
+  flex-direction: column;
+}
+
+.personAbout span {
+  font-size: 0.875rem;
+  color: var(--gray-400);
+  line-height: 1.6;
+}
+
+.personAbout b {
+  color: var(--gray-100);
+  line-height: 1.6;
+}

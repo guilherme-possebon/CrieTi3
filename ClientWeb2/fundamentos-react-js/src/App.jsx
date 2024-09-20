@@ -1,15 +1,24 @@
+import styles from "./App.module.css";
+import { Header } from "./components/Header/Header";
 import { Post } from "./components/Post/Post";
-import "./styles.css";
+import { Sidebar } from "./components/Sidebar/Sidebar";
+import "./global.css";
 
 function App() {
   return (
     <>
-      <Post autor="Bruno faller" conteudo="Text 01" />
-      <Post autor="Gabriel" conteudo="Text 02" />
-      <Post autor="João" conteudo="Text 03" />
-      <Post autor="Marcelo" conteudo="Text 04" />
-      <Post autor="Juca Bala" conteudo="Text 05" />
-      <Post autor="Timelo" conteudo="Text 06" />
+      <Header />
+
+      <div className={styles.wrapper}>
+        <Sidebar img="https://github.com/guilherme-possebon.png" />
+        <main>
+          <Post
+            autor="Teste"
+            conteudo="AAAA"
+            img="https://github.com/guilherme-possebon.png"
+          />
+        </main>
+      </div>
     </>
   );
 }
