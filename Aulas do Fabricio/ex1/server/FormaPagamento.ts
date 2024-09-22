@@ -16,7 +16,6 @@ export class FormaPagamento {
 
   async insert(): Promise<FormaPagamento | null> {
     let sql = `INSERT INTO forma_de_pagamento (name) VALUES ($1) RETURNING id`;
-
     let params = [this.name];
 
     let resultado = await dbQuery(sql, params);
@@ -51,19 +50,18 @@ export class FormaPagamento {
     return await this.insert();
   }
 
-  async delete(): Promise<FormaPagamento | null> {
+  public async delete(): Promise<FormaPagamento | boolean> {
     let sql = `DELETE FROM forma_de_pagamento WHERE id = $1;`;
     let resultado = await dbQuery(sql, [this.id]);
 
-    if (resultado.length > 0) {
-      this.id = resultado[0].id;
-      return this;
+    if (resultado.length == 0) {
+      return true;
     }
 
-    return null;
+    return false;
   }
 
-  static async findOneById(id: number): Promise<FormaPagamento | null> {
+  public async findOneById(id: number): Promise<FormaPagamento | null> {
     let sql = "SELECT * FROM forma_de_pagamento WHERE id = $1 LIMIT 1;";
     let resultado = await dbQuery(sql, [id]);
 
@@ -74,7 +72,7 @@ export class FormaPagamento {
     return null;
   }
 
-  static async findAll(): Promise<FormaPagamento[]> {
+  public async findAll(): Promise<FormaPagamento[]> {
     let sql = `SELECT * FROM forma_de_pagamento ORDER BY id`;
     let result = await dbQuery(sql);
     let formaPagamentos: FormaPagamento[] = [];

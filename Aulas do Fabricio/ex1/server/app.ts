@@ -23,13 +23,11 @@ let success = {
 server.post(
   "/formaDePagamento",
   async (req: Request, res: Response): Promise<Response> => {
-    let formaPagamento = new FormaPagamento();
-    let sql = "INSERT INTO forma_de_pagamento (name) VALUES ($1) ";
+    let formaPagamento: FormaPagamento = new FormaPagamento();
 
     formaPagamento.name = req.body.name;
 
-    let result = await dbQuery(sql, [formaPagamento.name]);
-
+    await formaPagamento.save();
     return res.status(200).json(success.insert);
   }
 );
@@ -38,8 +36,9 @@ server.post(
 server.get(
   "/formaDePagamento",
   async (req: Request, res: Response): Promise<Response> => {
-    let sql = "SELECT * FROM forma_de_pagamento order by id";
-    let result = await dbQuery(sql);
+    let formaPagamento: FormaPagamento = new FormaPagamento();
+
+    let result = await formaPagamento.findAll();
     return res.status(200).json(result);
   }
 );
@@ -49,11 +48,11 @@ server.get(
   "/formaDePagamento/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
-    let sql = "SELECT * FROM forma_de_pagamento WHERE id = $1";
+    let formaPagamento: FormaPagamento = new FormaPagamento();
 
     if (id > 0) {
-      let result = await dbQuery(sql, [id]);
-      return res.status(200).json(result[0]);
+      let result = await formaPagamento.findOneById(id);
+      return res.status(200).json(result);
     }
     let erro = {
       erro: "Não foi possivel encontrar a forma de pagamento",
@@ -67,18 +66,14 @@ server.put(
   "/formaDePagamento/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
-
-    let sql = "UPDATE forma_de_pagamento SET name = $2 WHERE id = $1";
     let formaPagamento: FormaPagamento = new FormaPagamento();
 
+    formaPagamento.id = id;
     formaPagamento.name = req.body.name;
 
-    if (
-      id > 0 &&
-      formaPagamento.name.length > 0 &&
-      formaPagamento.name.length <= 2
-    ) {
-      let result = await dbQuery(sql, [id, formaPagamento.name]);
+    if (id > 0 && formaPagamento.name.length > 0) {
+      let result = await formaPagamento.save();
+      console.log(result);
 
       return res.status(200).json(success.update);
     }
@@ -94,12 +89,20 @@ server.delete(
   "/formaDePagamento/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
+    let formaPagamento: FormaPagamento = new FormaPagamento();
 
-    let sql = "DELETE FROM forma_de_pagamento WHERE id = $1";
+    formaPagamento.id = id;
 
     if (id > 0) {
-      let result = await dbQuery(sql, [id]);
-      return res.status(200).json(success.delete);
+      let result = await formaPagamento.delete();
+      console.log(result);
+      if (result) {
+        return res.status(200).json(success.delete);
+      }
+      let erro = {
+        erro: "Não foi possivel deletar forma de pagamento devido a um erro do servidor",
+      };
+      return res.status(400).json(erro);
     }
     let erro = {
       erro: "Não foi possivel encontrar a forma de pagamento",
@@ -136,8 +139,8 @@ server.post(
 server.get(
   "/unidademedida",
   async (req: Request, res: Response): Promise<Response> => {
-    let sql = "SELECT * FROM unidade_medida order by id";
-    let result = await dbQuery(sql);
+    let unidadeMedida: UnidadeMedida = new UnidadeMedida();
+    let result = await unidadeMedida.findAll();
     return res.status(200).json(result);
   }
 );
@@ -147,11 +150,11 @@ server.get(
   "/unidademedida/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
-    let sql = "SELECT * FROM unidade_medida where id = $1";
+    let unidadeMedida: UnidadeMedida = new UnidadeMedida();
 
     if (id > 0) {
-      let result = await dbQuery(sql, [id]);
-      return res.status(200).json(result[0]);
+      let result = await unidadeMedida.findOneById(id);
+      return res.status(200).json(result);
     }
 
     let erro = {
@@ -165,12 +168,12 @@ server.get(
 server.post(
   "/unidademedida",
   async (req: Request, res: Response): Promise<Response> => {
-    let unidade: UnidadeMedida = new UnidadeMedida();
-    unidade.name = req.body.name;
+    let unidadeMedida: UnidadeMedida = new UnidadeMedida();
 
-    let sql = "INSERT INTO unidade_medida (name) VALUES ($1)";
-    if (unidade.name.length > 0 && unidade.name.length <= 2) {
-      let result = await dbQuery(sql, [unidade.name]);
+    unidadeMedida.name = req.body.name;
+
+    if (unidadeMedida.name.length > 0 && unidadeMedida.name.length <= 2) {
+      let result = await unidadeMedida.save();
       return res.status(200).json(success.insert);
     }
     let erro = {
@@ -185,15 +188,18 @@ server.put(
   "/unidademedida/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
-    let unidade: UnidadeMedida = new UnidadeMedida();
-    unidade.name = req.body.name;
+    let unidadeMedida: UnidadeMedida = new UnidadeMedida();
+    unidadeMedida.name = req.body.name;
+    unidadeMedida.id = id;
 
-    let sql = "UPDATE unidade_medida SET name= $2 WHERE id = $1";
-
-    if (id > 0 && unidade.name.length > 0 && unidade.name.length <= 2) {
-      let result = await dbQuery(sql, [id, unidade.name]);
+    if (
+      id > 0 &&
+      unidadeMedida.name.length > 0 &&
+      unidadeMedida.name.length <= 2
+    ) {
+      let result = await unidadeMedida.save();
       return res.status(200).json(success.update);
-    } else if (unidade.name.length > 2) {
+    } else if (unidadeMedida.name.length > 2) {
       let erro = {
         erro: "Insira um valor de no máximo 2 letras!",
       };
@@ -212,11 +218,12 @@ server.delete(
   "/unidademedida/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
+    let unidadeMedida: UnidadeMedida = new UnidadeMedida();
 
-    let sql = "DELETE FROM unidade_medida WHERE id = $1";
+    unidadeMedida.id = id;
 
     if (id > 0) {
-      let result = await dbQuery(sql, [id]);
+      let result = await unidadeMedida.delete();
       return res.status(200).json(success.delete);
     }
 

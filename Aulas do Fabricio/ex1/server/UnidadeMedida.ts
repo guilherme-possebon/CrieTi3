@@ -19,11 +19,14 @@ export class UnidadeMedida {
 
     let params = [this.name];
 
-    let resultado = await dbQuery(sql, params);
+    if (this.name.length > 0 && this.name.length <= 2) {
+      let resultado = await dbQuery(sql, params);
 
-    if (resultado.length > 0) {
-      this.id = resultado[0].id;
-      return this;
+      if (resultado.length > 0) {
+        this.id = resultado[0].id;
+        console.log(resultado, 123);
+        return this;
+      }
     }
 
     return null;
@@ -34,10 +37,12 @@ export class UnidadeMedida {
 
     let params = [this.id, this.name];
 
-    let resultado = await dbQuery(sql, params);
+    if (this.id > 0 && this.name.length > 0 && this.name.length <= 2) {
+      let resultado = await dbQuery(sql, params);
 
-    if (resultado) {
-      return this;
+      if (resultado) {
+        return this;
+      }
     }
 
     return null;
@@ -51,19 +56,18 @@ export class UnidadeMedida {
     return await this.insert();
   }
 
-  async delete(): Promise<UnidadeMedida | null> {
+  async delete(): Promise<UnidadeMedida | boolean> {
     let sql = `DELETE FROM unidade_medida WHERE id = $1;`;
     let resultado = await dbQuery(sql, [this.id]);
 
-    if (resultado.length > 0) {
-      this.id = resultado[0].id;
-      return this;
+    if (resultado.length == 0) {
+      return true;
     }
 
-    return null;
+    return false;
   }
 
-  static async findOneById(id: number): Promise<UnidadeMedida | null> {
+  public async findOneById(id: number): Promise<UnidadeMedida | null> {
     let sql = "SELECT * FROM unidade_medida WHERE id = $1 LIMIT 1;";
     let resultado = await dbQuery(sql, [id]);
 
@@ -74,7 +78,7 @@ export class UnidadeMedida {
     return null;
   }
 
-  static async findAll(): Promise<UnidadeMedida[]> {
+  public async findAll(): Promise<UnidadeMedida[]> {
     let sql = `SELECT * FROM unidade_medida ORDER BY id`;
     let result = await dbQuery(sql);
     let unidadesMedidas: UnidadeMedida[] = [];
