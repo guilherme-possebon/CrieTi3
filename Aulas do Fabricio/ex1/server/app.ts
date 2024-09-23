@@ -73,7 +73,6 @@ server.put(
 
     if (id > 0 && formaPagamento.name.length > 0) {
       let result = await formaPagamento.save();
-      console.log(result);
 
       return res.status(200).json(success.update);
     }
@@ -95,7 +94,6 @@ server.delete(
 
     if (id > 0) {
       let result = await formaPagamento.delete();
-      console.log(result);
       if (result) {
         return res.status(200).json(success.delete);
       }
@@ -122,9 +120,11 @@ server.post(
     usuario.username = req.body.username;
     usuario.password = req.body.password;
 
-    let result = await usuario.findUser(usuario.username, usuario.password);
+    let result = await usuario.findUser();
 
-    console.log(result);
+    if (result == true) {
+      return res.status(200).json(result);
+    }
 
     let erro = {
       erro: "Um dos campos estão vazios, verifique novamente!",
@@ -236,9 +236,7 @@ server.delete(
 
 // NOTE <-- Servidor (não mexer) -->
 
-const serverInstance = server.listen(port, () => {
-  console.log("Rodando na porta: " + port);
-});
+const serverInstance = server.listen(port, () => {});
 
 const gracefulShutdown = () => {
   serverInstance.close(() => {

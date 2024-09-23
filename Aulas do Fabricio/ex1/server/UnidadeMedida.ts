@@ -24,7 +24,6 @@ export class UnidadeMedida {
 
       if (resultado.length > 0) {
         this.id = resultado[0].id;
-        console.log(resultado, 123);
         return this;
       }
     }

@@ -20,14 +20,11 @@ export class Usuario {
     return erros;
   }
 
-  public async findUser(
-    username: string,
-    password: string
-  ): Promise<Usuario | object> {
+  public async findUser(): Promise<Usuario | object | boolean> {
     let sql =
       "select * from users WHERE username = $1 AND password = crypt($2, password)";
 
-    let notification = [
+    let notification: object[] = [
       {
         message: "Usuário está correto!",
       },
@@ -41,11 +38,12 @@ export class Usuario {
       },
     ];
 
-    if (username.length > 0 && password.length > 0) {
-      let result = await dbQuery(sql, [username, password]);
+    if (this.username.length > 0 && this.password.length > 0) {
+      let params: string[] = [this.username, this.password];
+      let result = await dbQuery(sql, params);
 
-      if (result.length > 0) {
-        return notification[0];
+      if (result[0]?.id > 0) {
+        return notification[0], true;
       }
       return notification[1];
     }
