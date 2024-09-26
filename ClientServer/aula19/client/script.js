@@ -1,7 +1,70 @@
 const apiUrl = "http://localhost:3000";
+let user = localStorage.getItem("user");
+let password = localStorage.getItem("password");
+
+async function verificaLogin() {
+  let resultado = await buscarLogin(user, password);
+
+  if (!resultado) {
+    window.location = "login.html";
+  }
+}
+
+async function buscarLogin(user, password) {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("user", user);
+  myHeaders.append("password", password);
+
+  console.log(user);
+  console.log(password);
+
+  const options = {
+    method: "GET",
+    headers: myHeaders,
+  };
+
+  let result = await fetch(apiUrl + "/login", options);
+  let json = await result.json();
+  console.log(json);
+
+  if (result.ok) {
+    return true;
+  }
+
+  return false;
+}
+
+function logout() {
+  localStorage.removeItem("user");
+  localStorage.removeItem("password");
+
+  window.location = "login.html";
+}
+
+async function login() {
+  let user = document.getElementById("user").value;
+  let password = document.getElementById("password").value;
+
+  let result = await buscarLogin(user, password);
+  console.log(result);
+
+  if (result) {
+    window.location = "index.html";
+    localStorage.setItem("user", user);
+    localStorage.setItem("password", password);
+  } else {
+    alert("Falha no login!");
+  }
+}
 
 async function listarViagens(id) {
+  const myHeaders = new Headers();
+  myHeaders.append("user", user);
+  myHeaders.append("password", password);
+
   const requestOptions = {
+    headers: myHeaders,
     method: "GET",
     redirect: "follow",
   };
@@ -14,7 +77,12 @@ async function listarViagens(id) {
 
 // NOTE listar pessoa
 async function listarPessoas() {
+  const myHeaders = new Headers();
+  myHeaders.append("user", user);
+  myHeaders.append("password", password);
+
   const requestOptions = {
+    headers: myHeaders,
     method: "GET",
     redirect: "follow",
   };
@@ -94,6 +162,8 @@ async function gravarPessoa() {
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("user", user);
+  myHeaders.append("password", password);
 
   let pessoa = {
     nome: document.getElementById("nome").value,
@@ -140,12 +210,17 @@ async function editarPessoa(id) {
 // NOTE excluir pessoa
 async function excluirPessoa(id) {
   if (confirm("Deseja realmente excluir essa pessoa: " + id)) {
-    const requestOptions = {
+    const myHeaders = new Headers();
+    myHeaders.append("user", user);
+    myHeaders.append("password", password);
+
+    const options = {
       method: "DELETE",
       redirect: "follow",
+      headers: myHeaders,
     };
 
-    let result = await fetch(`${apiUrl}/pessoa/${id}`, requestOptions);
+    let result = await fetch(`${apiUrl}/pessoa/${id}`, options);
 
     if (result.ok) {
       alert("Pessoa excluída com sucesso");
@@ -171,12 +246,16 @@ async function carregarPessoa() {
   if (id != null) {
     document.getElementById("h1").innerHTML = "Editar pessoa";
 
-    const requestOptions = {
+    const myHeaders = new Headers();
+    myHeaders.append("user", user);
+    myHeaders.append("password", password);
+
+    const options = {
       method: "GET",
-      redirect: "follow",
+      headers: myHeaders,
     };
 
-    let result = await fetch(apiUrl + "/pessoa/" + id, requestOptions);
+    let result = await fetch(apiUrl + "/pessoa/" + id, options);
     let pessoa = await result.json();
 
     document.getElementById("nome").value = pessoa.nome;
@@ -239,6 +318,8 @@ async function gravarViagem() {
   let id = pegarParametro("id");
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("user", user);
+  myHeaders.append("password", password);
 
   const raw = {
     destino: document.getElementById("destino").value,
@@ -267,9 +348,14 @@ async function gravarViagem() {
 }
 
 async function removerViagem(idpessoa, id) {
+  const myHeaders = new Headers();
+  myHeaders.append("user", user);
+  myHeaders.append("password", password);
+
   const options = {
     method: "DELETE",
     redirect: "follow",
+    headers: myHeaders,
   };
 
   let result = await fetch(

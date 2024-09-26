@@ -6,6 +6,9 @@ async function login() {
   myHeaders.append("Content-Type", "application/json");
   let username = document.getElementById("username").value;
 
+  // myHeaders.append("user", document.getElementById("username").value);
+  // myHeaders.append("password", document.getElementById("password").value);
+
   const raw = JSON.stringify({
     username,
     password: document.getElementById("password").value,

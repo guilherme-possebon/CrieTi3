@@ -1,4 +1,4 @@
-import { dbQuery } from "./database";
+import { dbQuery } from "../database";
 
 export class Viagem {
   id: number = 0;
@@ -6,6 +6,7 @@ export class Viagem {
   destino: string = "";
   datahorapartida: Date = new Date();
   datahorachegada: Date = new Date();
+
   async insert() {
     let sql = `INSERT INTO "viagens"
         ("idpessoa", "destino", "datahorapartida", "datahorachegada")

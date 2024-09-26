@@ -1,7 +1,7 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import cors from "cors";
-import { Pessoa } from "./Pessoa";
-import { Viagem } from "./Viagem";
+import { Pessoa } from "./model/Pessoa";
+import { Viagem } from "./model/Viagem";
 import { client, dbQuery } from "./database";
 
 let port = 3000;
@@ -10,6 +10,41 @@ let server: Express = express();
 
 server.use(cors());
 server.use(express.json());
+
+server.use(async (req: Request, res: Response, next: NextFunction) => {
+  console.log("[" + new Date() + "] " + req.method + " " + req.url);
+  console.log("user=" + req.get("user"));
+  console.log("password=" + req.get("password"));
+
+  let user = req.get("user");
+  let password = req.get("password");
+
+  //todo fazer consulta no banco
+
+  let sql =
+    "select * from usuario WHERE username = $1 AND password = crypt($2, password)";
+
+  let params = [user, password];
+
+  let result = await dbQuery(sql, params);
+
+  console.log(result[0]?.id);
+
+  if (result[0]?.id > 0) {
+    next();
+    return;
+  }
+
+  let erro = { id: null, erro: "Falha na autenticação" };
+
+  return res.status(401).json(erro);
+});
+
+server.get("/login", async (req: Request, res: Response): Promise<Response> => {
+  let resultado = { id: null, resultado: "Login okay" };
+
+  return res.status(200).json(resultado);
+});
 
 // NOTE Listar pessoas
 server.get(

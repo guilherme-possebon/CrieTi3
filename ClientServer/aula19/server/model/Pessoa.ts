@@ -1,4 +1,4 @@
-import { dbQuery } from "./database";
+import { dbQuery } from "../database";
 import { Viagem } from "./Viagem";
 
 export class Pessoa {

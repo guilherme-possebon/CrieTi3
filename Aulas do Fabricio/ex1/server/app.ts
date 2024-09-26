@@ -116,7 +116,8 @@ server.post(
   "/usersADM",
   async (req: Request, res: Response): Promise<Response> => {
     let usuario = new Usuario();
-
+    // let user = req.get("user");
+    // let password = req.get("password");
     usuario.username = req.body.username;
     usuario.password = req.body.password;
 
