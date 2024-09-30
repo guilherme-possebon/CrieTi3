@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Avatar } from "../Avatar/Avatar";
 import { Feedback } from "../Feedback/Feedback";
-import { Infos } from "../Infos/Infos";
+import { Infos } from "../Infos/Info";
 import styles from "./Post.module.css";
 
 export function Post(props) {
@@ -11,8 +11,11 @@ export function Post(props) {
         <header className={styles.profile}>
           <div className={styles.infos}>
             <Avatar imgLink={props.img} />
-            <Infos infosAutor={props.autor} infosConteudo={props.conteudo} />
-            <div className={styles.personAbout}></div>
+            <Infos
+              infoAuthor={props.author}
+              infoContent={props.content}
+              infoAuthorRole={props.authorRole}
+            />
           </div>
           <span className={styles.text}>Publicado há 1h</span>
         </header>

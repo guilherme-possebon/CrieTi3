@@ -8,3 +8,9 @@
   gap: 2rem;
   align-items: flex-start;
 }
+
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}

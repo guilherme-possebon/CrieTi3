@@ -4,10 +4,8 @@ import styles from "./Button.module.css";
 export function Button(props) {
   return (
     <>
-      <div
-        className={`${styles.fadeDiv} ${props.isFocused ? styles.visible : ""}`}
-      >
-        <button type="button" className={styles.btnPrimary}>
+      <div>
+        <button type={props.type} className={styles.btnPrimary}>
           {props.nomeBotao}
         </button>
       </div>
