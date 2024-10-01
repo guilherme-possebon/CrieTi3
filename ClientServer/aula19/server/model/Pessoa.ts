@@ -31,8 +31,11 @@ export class Pessoa {
       errors.push("É necessário ser maior de idade.");
     }
 
-    if (this.cidade.length == 0 || this.siglauf.length == 0) {
-      errors.push("É necessário definir cidade e sigla.");
+    if (this.siglauf.length == 0) {
+      errors.push("É necessário definir sigla.");
+    }
+    if (this.cidade.length == 0) {
+      errors.push("É necessário definir cidade.");
     }
 
     return errors;
@@ -107,8 +110,10 @@ export class Pessoa {
 
     if (resultado.length > 0) {
       let pessoa = new Pessoa();
+      let viagem = new Viagem();
+
       Object.assign(pessoa, resultado[0]);
-      pessoa.viagens = await Viagem.obterViagensPessoa(pessoa.id);
+      pessoa.viagens = await viagem.obterViagensPessoa(pessoa.id);
       return pessoa;
     }
 
@@ -123,9 +128,10 @@ export class Pessoa {
     for (let i = 0; i < result.length; i++) {
       let json = result[i];
       let pessoa = new Pessoa();
+      let viagem = new Viagem();
       Object.assign(pessoa, json);
       pessoas.push(pessoa);
-      pessoa.viagens = await Viagem.obterViagensPessoa(pessoa.id);
+      pessoa.viagens = await viagem.obterViagensPessoa(pessoa.id);
     }
 
     return pessoas;

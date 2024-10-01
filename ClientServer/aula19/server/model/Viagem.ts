@@ -7,7 +7,7 @@ export class Viagem {
   datahorapartida: Date = new Date();
   datahorachegada: Date = new Date();
 
-  async insert() {
+  public async insert() {
     let sql = `INSERT INTO "viagens"
         ("idpessoa", "destino", "datahorapartida", "datahorachegada")
         VALUES ($1,$2,$3,$4) RETURNING id`;
@@ -29,19 +29,16 @@ export class Viagem {
     return null;
   }
 
-  async delete() {
+  public async delete() {
     let sql = `DELETE FROM viagens WHERE id = $1;`;
     let resultado = await dbQuery(sql, [this.id]);
 
-    if (resultado.length > 0) {
-      this.id = resultado[0].id;
-      return this;
-    }
+    console.log(resultado);
 
-    return null;
+    return true;
   }
 
-  static async findOneById(id: number) {
+  public async findOneById(id: number) {
     let sql = "SELECT * FROM viagens WHERE id = $1 LIMIT 1;";
     let resultado = await dbQuery(sql, [id]);
 
@@ -52,7 +49,7 @@ export class Viagem {
     return null;
   }
 
-  static async findAll() {
+  public async findAll() {
     let sql = `SELECT * FROM viagens ORDER BY id`;
     let result = await dbQuery(sql);
     let viagens: Viagem[] = [];
@@ -84,7 +81,7 @@ export class Viagem {
     return viagens;
   }
 
-  static async obterViagensPessoa(idpessoa: number) {
+  public async obterViagensPessoa(idpessoa: number) {
     let sql = `SELECT * FROM viagens WHERE "idpessoa" = $1;`;
     let result = await dbQuery(sql, [idpessoa]);
     let viagens: Viagem[] = [];

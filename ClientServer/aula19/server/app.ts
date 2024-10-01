@@ -1,36 +1,37 @@
-import express, { Express, NextFunction, Request, Response } from "express";
+//EXERCICIO
+//fazer model de usario
+//fazer as rotas crud usuario
+//fazer consulta no banco para login
+//crud de usuario no front
+import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { Pessoa } from "./model/Pessoa";
 import { Viagem } from "./model/Viagem";
-import { client, dbQuery } from "./database";
 
-let port = 3000;
-
+const port: Number = 3000;
 let server: Express = express();
 
 server.use(cors());
 server.use(express.json());
 
-server.use(async (req: Request, res: Response, next: NextFunction) => {
-  console.log("[" + new Date() + "] " + req.method + " " + req.url);
-  console.log("user=" + req.get("user"));
-  console.log("password=" + req.get("password"));
+server.use((req: Request, res: Response, next: NextFunction) => {
+  // console.log("[" + new Date() + "] " + req.method + " " + req.url);
+  let authorization = req.get("Authorization")?.replace("Basic", "");
 
-  let user = req.get("user");
-  let password = req.get("password");
+  // console.log(authorization);
+
+  let user = "";
+  let password = "";
+  if (authorization) {
+    let decoded = Buffer.from(authorization, "base64").toString("binary");
+    let userPassword = decoded.split(":");
+    user = userPassword[0];
+    password = userPassword[1];
+  }
 
   //todo fazer consulta no banco
-
-  let sql =
-    "select * from usuario WHERE username = $1 AND password = crypt($2, password)";
-
-  let params = [user, password];
-
-  let result = await dbQuery(sql, params);
-
-  console.log(result[0]?.id);
-
-  if (result[0]?.id > 0) {
+  //login com sucesso
+  if (user == "bonfa" && password == "123456") {
     next();
     return;
   }
@@ -46,16 +47,15 @@ server.get("/login", async (req: Request, res: Response): Promise<Response> => {
   return res.status(200).json(resultado);
 });
 
-// NOTE Listar pessoas
 server.get(
   "/pessoa",
   async (req: Request, res: Response): Promise<Response> => {
     let pessoas = await Pessoa.listAll();
+
     return res.status(200).json(pessoas);
   }
 );
 
-// NOTE Pegar um pessoa
 server.get(
   "/pessoa/:id",
   async (req: Request, res: Response): Promise<Response> => {
@@ -66,26 +66,22 @@ server.get(
       return res.status(200).json(pessoa);
     }
 
-    let erro = {
-      id: id,
-      erro: "Id da pessoa não foi encontrada.   ",
-    };
+    let erro = { id: id, erro: "Pessoa não encontrada." };
 
     return res.status(400).json(erro);
   }
 );
 
-// NOTE Criar pessoa
+//gravar pessoa
 server.post(
   "/pessoa",
   async (req: Request, res: Response): Promise<Response> => {
-    let pessoa: Pessoa = new Pessoa();
-
+    let pessoa = new Pessoa();
     pessoa.nome = req.body.nome;
     pessoa.cpf = req.body.cpf.replace(/\D/g, "");
     pessoa.idade = req.body.idade;
-    pessoa.siglauf = req.body.siglauf;
     pessoa.cidade = req.body.cidade;
+    pessoa.siglauf = req.body.siglauf;
 
     let erros: string[] = pessoa.validate();
 
@@ -106,7 +102,7 @@ server.post(
   }
 );
 
-// NOTE Editar uma pessoa
+//editar pessoa
 server.put(
   "/pessoa/:id",
   async (req: Request, res: Response): Promise<Response> => {
@@ -123,6 +119,7 @@ server.put(
     pessoa.idade = req.body.idade;
     pessoa.cidade = req.body.cidade;
     pessoa.siglauf = req.body.siglauf;
+    console.log(pessoa);
 
     let erros: string[] = pessoa.validate();
 
@@ -142,40 +139,31 @@ server.put(
   }
 );
 
-// NOTE Deletar uma pessoa
 server.delete(
   "/pessoa/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
     let pessoa = await Pessoa.findOneById(id);
 
-    if (pessoa != null) {
-      await pessoa?.delete();
+    await pessoa?.delete();
 
-      let retorno = { okay: true };
-      return res.status(200).json(retorno);
-    }
-
-    let erro = {
-      id: id,
-      erro: "Id da pessoa não foi encontrada.",
-    };
-
-    return res.status(400).json(erro);
+    let retorno = { okay: true };
+    return res.status(200).json(pessoa);
   }
 );
 
-// NOTE Listar viagens
+// NOTE Listar viagens de acordo com a pessoa
 server.get(
-  "/pessoa/:id/viagens",
+  "/pessoa/:id/viagem",
   async (req: Request, res: Response): Promise<Response> => {
-    let viagens = await Viagem.findAll();
+    let id = Number(req.params.id);
+    let viagem = new Viagem();
+    let viagens = await viagem.obterViagensPessoa(id);
 
     return res.status(200).json(viagens);
   }
 );
 
-// NOTE Adicionar uma viagem
 server.post(
   "/pessoa/:id/adicionarviagem",
   async (req: Request, res: Response): Promise<Response> => {
@@ -206,7 +194,6 @@ server.post(
   }
 );
 
-// NOTE Remover uma viagem
 server.delete(
   "/pessoa/:id/removerviagem/:idViagem",
   async (req: Request, res: Response): Promise<Response> => {
@@ -224,9 +211,10 @@ server.delete(
       return res.status(400).json(erro);
     }
 
-    let viagem = await Viagem.findOneById(idViagem);
+    let viagem = new Viagem();
+    let viagemEspecifica = await viagem.findOneById(idViagem);
 
-    if (viagem == null) {
+    if (viagemEspecifica == null) {
       let erro = {
         id: id,
         posicao: idViagem,
@@ -236,18 +224,35 @@ server.delete(
       return res.status(400).json(erro);
     }
 
-    await viagem.delete();
-    let retorno = { okay: true };
-    return res.status(200).json(retorno);
+    viagem.id = idViagem;
+    let result = await viagem.delete();
+    if (result) {
+      let retorno = { okay: true };
+      return res.status(200).json(retorno);
+    }
+    let erro = {
+      erro: "Erro ao deletar a viagem!",
+    };
+    return res.status(400).json(erro);
   }
 );
 
-// NOTE Listar uma viagem
+server.get(
+  "/viagem/",
+  async (req: Request, res: Response): Promise<Response> => {
+    let viagem = new Viagem();
+    let viagens = await viagem.findAll();
+
+    return res.status(200).json(viagens);
+  }
+);
+
 server.get(
   "/viagem/:id",
   async (req: Request, res: Response): Promise<Response> => {
     let id = Number(req.params.id);
-    let viagem = await Viagem.findOneById(id);
+    let viagem = new Viagem();
+    let viagemEspecifica = await viagem.findOneById(id);
 
     if (viagem == null) {
       let erro = { id: id, erro: "Viagem não encontrada." };
@@ -255,11 +260,10 @@ server.get(
       return res.status(400).json(erro);
     }
 
-    return viagem;
+    return viagemEspecifica;
   }
 );
 
-// NOTE Listar viagens de acordo com o destino
 server.get(
   "/viagem/destino/:destino",
   async (req: Request, res: Response): Promise<Response> => {
@@ -268,14 +272,6 @@ server.get(
   }
 );
 
-const serverInstance = server.listen(port, () => {});
-
-const gracefulShutdown = () => {
-  serverInstance.close(() => {
-    client.end();
-    process.exit(0);
-  });
-};
-
-process.on("SIGTERM", gracefulShutdown);
-process.on("SIGINT", gracefulShutdown);
+server.listen(port, () => {
+  console.log("Server iniciado na porta " + port);
+});

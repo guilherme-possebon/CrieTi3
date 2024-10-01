@@ -1,6 +1,5 @@
 const apiUrl = "http://localhost:3000";
-let user = localStorage.getItem("user");
-let password = localStorage.getItem("password");
+let authorization = localStorage.getItem("Authorization");
 
 async function verificaLogin() {
   let resultado = await buscarLogin(user, password);
@@ -10,14 +9,11 @@ async function verificaLogin() {
   }
 }
 
-async function buscarLogin(user, password) {
+async function buscarLogin(authorization) {
   const myHeaders = new Headers();
+  console.log(authorization);
   myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("user", user);
-  myHeaders.append("password", password);
-
-  console.log(user);
-  console.log(password);
+  myHeaders.append("Authorization", authorization);
 
   const options = {
     method: "GET",
@@ -36,8 +32,7 @@ async function buscarLogin(user, password) {
 }
 
 function logout() {
-  localStorage.removeItem("user");
-  localStorage.removeItem("password");
+  localStorage.removeItem("Authorization");
 
   window.location = "login.html";
 }
@@ -46,22 +41,23 @@ async function login() {
   let user = document.getElementById("user").value;
   let password = document.getElementById("password").value;
 
-  let result = await buscarLogin(user, password);
+  let authorization = btoa(user + ":" + password);
+  let result = await buscarLogin(authorization);
   console.log(result);
 
   if (result) {
+    localStorage.setItem("Authorization", authorization);
+    alert("Login ok");
     window.location = "index.html";
-    localStorage.setItem("user", user);
-    localStorage.setItem("password", password);
   } else {
     alert("Falha no login!");
   }
 }
 
 async function listarViagens(id) {
+  console.log(authorization);
   const myHeaders = new Headers();
-  myHeaders.append("user", user);
-  myHeaders.append("password", password);
+  myHeaders.append("Authorization", authorization);
 
   const requestOptions = {
     headers: myHeaders,
@@ -69,7 +65,9 @@ async function listarViagens(id) {
     redirect: "follow",
   };
 
-  let result = await fetch(apiUrl + `/pessoa/${id}/viagens`, requestOptions);
+  console.log(id);
+
+  let result = await fetch(apiUrl + `/pessoa/${id}/viagem`, requestOptions);
   let json = await result.json();
 
   return json;
@@ -78,8 +76,7 @@ async function listarViagens(id) {
 // NOTE listar pessoa
 async function listarPessoas() {
   const myHeaders = new Headers();
-  myHeaders.append("user", user);
-  myHeaders.append("password", password);
+  myHeaders.append("Authorization", authorization);
 
   const requestOptions = {
     headers: myHeaders,
@@ -97,6 +94,8 @@ async function listarPessoas() {
     let viagem = "";
     let viagensHtml = "";
     let viagens = await listarViagens(pessoa.id);
+
+    console.log(viagens);
 
     let pessoaExcluir = `<button onclick="excluirPessoa(${pessoa.id})" class="btn btn-danger">Excluir</button>`;
     let pessoaEditar = `<button onclick="editarPessoa(${pessoa.id})" class="btn btn-warning">Editar</button>`;
@@ -162,8 +161,7 @@ async function gravarPessoa() {
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("user", user);
-  myHeaders.append("password", password);
+  myHeaders.append("Authorization", authorization);
 
   let pessoa = {
     nome: document.getElementById("nome").value,
@@ -318,8 +316,7 @@ async function gravarViagem() {
   let id = pegarParametro("id");
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("user", user);
-  myHeaders.append("password", password);
+  myHeaders.append("Authorization", authorization);
 
   const raw = {
     destino: document.getElementById("destino").value,
@@ -349,8 +346,7 @@ async function gravarViagem() {
 
 async function removerViagem(idpessoa, id) {
   const myHeaders = new Headers();
-  myHeaders.append("user", user);
-  myHeaders.append("password", password);
+  myHeaders.append("Authorization", authorization);
 
   const options = {
     method: "DELETE",
