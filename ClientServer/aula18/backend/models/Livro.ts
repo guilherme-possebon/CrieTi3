@@ -102,7 +102,7 @@ export class Livro {
                    l.id AS livro_id,
                    l.titulo AS titulo,
                    l.autor AS autor,
-                   l.qtpaginas AS quantidade_paginas,
+                   l.qtpaginas AS qtpaginas,
                    l.emprestado AS emprestado,
                    c.id AS categoria_id,
                    c.name AS categoria_name

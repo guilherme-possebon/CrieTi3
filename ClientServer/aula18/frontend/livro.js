@@ -15,20 +15,22 @@ async function listarLivros() {
     let livro = livros[i];
     let emprestado = livro.emprestado == true ? "Sim" : "Não";
 
-    console.log(livro.livro_id, "LIvro");
+    let categoriaBotao = "";
+    let categoriaNome = "";
 
-    console.log(livro.categoria_ids, "Categoria");
-
-    let test = "";
-
-    if (livro.categorias) {
-      let ids = livro.categorias?.split(", ");
+    if (livro.categoria_ids) {
+      let ids = livro.categoria_ids?.split(", ");
       ids.forEach((id) => {
-        console.log(id, "Teste");
-        test += `<li>${id}</li>`;
+        categoriaBotao += `<button onclick="editarCategoria(${id})" class="btn btn-warning">Editar</button>`;
       });
     }
 
+    if (livro.categorias) {
+      let categorias = livro.categorias?.split(", ");
+      categorias.forEach((categoria) => {
+        categoriaNome += categoria;
+      });
+    }
     let excluir = `<button onclick="excluirLivro(${livro.livro_id})" class="btn btn-danger">Excluir</button>`;
     let editar = `<button onclick="editarLivro(${livro.livro_id})" class="btn btn-warning">Editar</button>`;
     let botao = `<button onclick="devolverLivro(${livro.livro_id})">Devolver</button>`;
@@ -45,7 +47,7 @@ async function listarLivros() {
             <td>${livro.autor}</td>
             <td>${livro.qtpaginas}</td>
             <td>${emprestado} ${botao}</td>
-            <td>${test}</td>
+            <td>${categoriaNome} ${categoriaBotao}</td>
         </tr>`;
   }
 
@@ -64,6 +66,7 @@ async function gravarLivro() {
     titulo: document.getElementById("titulo").value,
     autor: document.getElementById("autor").value,
     qtpaginas: document.getElementById("qtpaginas").value,
+    emprestado: false,
   };
 
   const raw = JSON.stringify(livro);
@@ -76,6 +79,11 @@ async function gravarLivro() {
   };
 
   let result = await fetch(apiUrl + url, options);
+  let json = await result.json();
+
+  console.log(json);
+
+  await gravarCategoriaNoLivro(json.id);
 
   if (result.ok) {
     alert("Livro cadastrado com sucesso!");
@@ -126,12 +134,15 @@ async function carregarLivro() {
 
     let result = await fetch(apiUrl + "/livro/" + id, requestOptions);
     let livro = await result.json();
+    console.log(livro);
 
     document.getElementById("titulo").value = livro.titulo;
     document.getElementById("autor").value = livro.autor;
     document.getElementById("qtpaginas").value = livro.qtpaginas;
+    document.getElementById("categoria").value = livro.categoria_id;
   }
 }
+
 async function emprestarLivro(id) {
   if (confirm("Deseja realmente emprestar o livro? " + id)) {
     const options = {
@@ -160,8 +171,6 @@ async function devolverLivro(id) {
 
     let result = await fetch(apiUrl + "/livro/" + id + "/devolver", options);
     let json = await result.json();
-    console.log(json);
-    console.log(result);
 
     if (result.ok) {
       alert("Livro devolvido com sucesso!");

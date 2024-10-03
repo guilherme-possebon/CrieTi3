@@ -1,6 +1,7 @@
 import { dbQuery } from "../database";
 
 export class LivrosHasCategorias {
+  id: number = 0;
   livros_id: number = 0;
   categorias_id: number = 0;
   newCategorias_id: number = 0;
@@ -11,6 +12,8 @@ export class LivrosHasCategorias {
 
     if (this.livros_id > 0 && this.categorias_id > 0) {
       let result = await dbQuery(sql, params);
+
+      console.log(result, "Modal");
 
       if (result.rows.length > 0) {
         this.livros_id = result.rows[0].livros_id;

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Livro } from "../models/Livro";
+import { Livro } from "../models/livro";
 import { dbQuery } from "../database";
 
 export const getAllLivros = async (
