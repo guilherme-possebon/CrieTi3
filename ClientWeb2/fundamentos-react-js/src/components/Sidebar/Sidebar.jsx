@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Avatar } from "../Avatar/Avatar";
+import { Infos } from "../Infos/Info";
 import styles from "./Sidebar.module.css";
 
 import { PencilLine } from "@phosphor-icons/react";
@@ -16,8 +17,12 @@ export function Sidebar(props) {
 
         <div className={styles.profile}>
           <Avatar imgLink={props.img} />
-          <b>Guilherme Possebon</b>
-          <span>Desenvolvedor Junior</span>
+
+          <Infos
+            infoAuthor="Guilherme Possebon"
+            infoAuthorRole="Desenvolvedor Junior"
+            where="sidebar"
+          />
         </div>
 
         <footer>

@@ -1,0 +1,15 @@
+.comment {
+  background: var(--gray-700);
+  border-radius: 8px;
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.container {
+  display: flex;
+  margin: 24px;
+  gap: 24px;
+}
