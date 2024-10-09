@@ -8,7 +8,7 @@ async function gravarCategoria() {
   myHeaders.append("Content-Type", "application/json");
 
   let categoria = {
-    name: document.getElementById("name").value,
+    name: document.getElementById("categoria").value,
   };
 
   const raw = JSON.stringify(categoria);
@@ -49,16 +49,20 @@ async function excluirLivro(id) {
   listarLivros();
 }
 
-async function editarCategoria(id) {
-  console.log(id);
-  window.location = "adicionarcategoria.html?id=" + id;
-}
-
 async function carregarCategoria() {
   let id = pegarParamentro("id");
 
   if (id != null) {
     document.getElementById("h1").innerHTML = "Editar categoria";
+    document.getElementById("name").hidden = true;
+    let html = `
+    <label for="categoria">Nome</label>
+    <select name="categoria" id="categoria" class="categoriaSelect"></select>
+    `;
+    document.getElementById("inputsContainer").innerHTML = html;
+
+    document.getElementById("saveButton").innerText = "Salvar categoria";
+    carregarCategoriasDosLivros();
     const requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -67,7 +71,7 @@ async function carregarCategoria() {
     let result = await fetch(apiUrl + "/categoria/" + id, requestOptions);
     let categoria = await result.json();
 
-    document.getElementById("name").value = categoria.name;
+    document.getElementById("categoria").value = categoria.name;
   }
 }
 

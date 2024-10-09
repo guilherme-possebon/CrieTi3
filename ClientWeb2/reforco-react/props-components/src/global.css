@@ -1,0 +1,48 @@
+:root {
+  --white: #fff;
+  --gray-100: rgb(225, 225, 230);
+  --gray-300: rgb(196, 196, 204);
+  --gray-400: rgb(141, 141, 153);
+  --gray-600: rgb(124, 124, 138);
+  --gray-700: rgb(50, 50, 56);
+  --gray-800: rgb(32, 32, 36);
+  --gray-900: rgb(18, 18, 20);
+
+  --blue-300: #87cefa;
+  --blue-500: #1e90ff;
+
+  --red-500: #f75a68;
+
+  --success: #28a745;
+  --danger: #dc3545;
+  --primary: #007bff;
+
+  --successHover: #1d7c33;
+  --dangerHover: #b32d3a;
+  --primaryHover: #0252a8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: var(--gray-900);
+  color: var(--gray-300);
+  -webkit-font-smoothing: antialiased;
+}
+
+body,
+input,
+textarea,
+button {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  border: 0;
+}
+
+a {
+  text-decoration: none;
+}

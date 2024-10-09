@@ -130,8 +130,8 @@ export class Livro {
                    l.autor,
                    l.qtpaginas,
                    l.emprestado,
-                   STRING_AGG(c.id::text, ', ') AS categoria_ids,
-                   STRING_AGG(c.name, ', ') AS categorias
+                   STRING_AGG(c.id::text, ', ') AS categoria_id,
+                   STRING_AGG(c.name, ', ') AS categoria_name
                FROM
                    livros l
                LEFT JOIN

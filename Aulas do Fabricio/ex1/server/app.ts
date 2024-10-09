@@ -4,6 +4,7 @@ import { FormaPagamento } from "./FormaPagamento";
 import { Usuario } from "./Usuario";
 import { dbQuery, client } from "./database";
 import { UnidadeMedida } from "./UnidadeMedida";
+import { SendEmail } from "./SendEmail";
 
 const port: Number = 3000;
 let server: Express = express();
@@ -231,6 +232,29 @@ server.delete(
       erro: "Não foi possivel encontrar a unidade de medida",
     };
     return res.status(400).json(erro);
+  }
+);
+
+// NOTE Mandar relatório de forma de pagamento por email
+server.get(
+  "/relatorio/formapagamento",
+  async (req: Request, res: Response): Promise<Response> => {
+    let formaPagamento: SendEmail = new SendEmail();
+
+    let result = await formaPagamento.findAllFormaPagamento();
+    return res.status(200).json(result);
+  }
+);
+
+// NOTE Mandar relatório de unidade de medida por email
+server.get(
+  "/relatorio/unidademedida",
+  async (req: Request, res: Response): Promise<Response> => {
+    let unidadeMedida: SendEmail = new SendEmail();
+
+    let result = await unidadeMedida.findAllUnidadeMedidaEmail();
+
+    return res.status(200).json(result);
   }
 );
 

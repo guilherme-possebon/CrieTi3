@@ -91,6 +91,8 @@
       </div>
     </nav>
 
+    <button onclick="sendEmail('formapagamento')">Gerar Relatório</button>
+
     <div class="flex-grow flex items-center justify-center flex-col">
       <div class="text-center m-5">
         <h2>
@@ -117,6 +119,7 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="sendEmail.js"></script>
     <script>
       showPaymentOptions();
       checkLoginStatus();

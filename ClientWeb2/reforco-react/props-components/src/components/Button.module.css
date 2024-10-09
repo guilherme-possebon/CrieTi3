@@ -1,0 +1,38 @@
+.button {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+
+  transition: all ease-in-out 200ms;
+}
+
+.success {
+  background-color: var(--success);
+  color: white;
+}
+
+.danger {
+  background-color: var(--danger);
+  color: white;
+}
+
+.primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.success:hover {
+  background-color: var(--successHover);
+  color: white;
+}
+
+.danger:hover {
+  background-color: var(--dangerHover);
+  color: white;
+}
+
+.primary:hover {
+  background-color: var(--primaryHover);
+  color: white;
+}

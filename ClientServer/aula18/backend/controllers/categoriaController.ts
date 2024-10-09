@@ -58,6 +58,8 @@ export const updateCategoria = async (
   if (categoriaEncontrada) {
     categoria.name = req.body.name;
 
+    console.log(categoria, 123);
+
     let result = await categoria.save();
     if (result !== null) {
       return res.status(200).json(result);

@@ -15,20 +15,14 @@ async function listarLivros() {
     let livro = livros[i];
     let emprestado = livro.emprestado == true ? "Sim" : "Não";
 
-    let categoriaBotao = "";
     let categoriaNome = "";
 
-    if (livro.categoria_ids) {
-      let ids = livro.categoria_ids?.split(", ");
-      ids.forEach((id) => {
-        categoriaBotao += `<button onclick="editarCategoria(${id})" class="btn btn-warning">Editar</button>`;
-      });
-    }
+    console.log(livro);
 
-    if (livro.categorias) {
-      let categorias = livro.categorias?.split(", ");
+    if (livro.categoria_name) {
+      let categorias = livro.categoria_name?.split(", ");
       categorias.forEach((categoria) => {
-        categoriaNome += categoria;
+        categoriaNome += `<li>${categoria}</li>`;
       });
     }
     let excluir = `<button onclick="excluirLivro(${livro.livro_id})" class="btn btn-danger">Excluir</button>`;
@@ -47,7 +41,7 @@ async function listarLivros() {
             <td>${livro.autor}</td>
             <td>${livro.qtpaginas}</td>
             <td>${emprestado} ${botao}</td>
-            <td>${categoriaNome} ${categoriaBotao}</td>
+            <td>${categoriaNome}</td>
         </tr>`;
   }
 
@@ -116,6 +110,11 @@ async function editarLivro(id) {
   window.location = "adicionarlivro.html?id=" + id;
 }
 
+async function editarCategoria(id) {
+  console.log(id);
+  window.location = "adicionarcategoria.html?id=" + id;
+}
+
 function pegarParamentro(paramentro) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -127,6 +126,7 @@ async function carregarLivro() {
 
   if (id != null) {
     document.getElementById("h1").innerHTML = "Editar livro";
+    document.getElementById("saveButton").innerText = "Salvar livro";
     const requestOptions = {
       method: "GET",
       redirect: "follow",
